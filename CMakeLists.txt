@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(CNumLibrary
-	VERSION 0.1.0
+	VERSION 0.2.0
 	LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -11,29 +11,63 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 
-option(MSVC "Using MSVC compiler" OFF)
 option(BUILD_TESTS "Build test harness" ON)
+option(DEPLOY_TOOLS "Include dependencies for the Deploy namespace (REST API tools)" OFF)
 
-file(GLOB_RECURSE CNUM_HEADERS CONFIGURE_DEPENDS "${INCLUDE_DIR}/*.h" "${INCLUDE_DIR}/*.hpp" "${INCLUDE_DIR}/*.tpp")
-file(GLOB_RECURSE CNUM_SOURCE CONFIGURE_DEPENDS "${SOURCE_DIR}/*.c" "${SOURCE_DIR}/*.cpp")
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
 
-add_library(CNum SHARED
-	    ${CNUM_HEADERS}
-	    ${CNUM_SOURCE})
+if (DEPLOY_TOOLS)
+	set(ASIO_HEADER_DIR "" CACHE PATH "Dir that contains asio.hpp")
+	find_path(ASIO_INCLUDE_DIR
+	  	NAMES asio.hpp
+	  	HINTS ${ASIO_HEADER_DIR}
+	  	DOC "Path to directory containing asio.hpp for Crow")
+
+	if (NOT ASIO_INCLUDE_DIR)
+		message(FATAL_ERROR "asio.hpp couldn't be found. Set ASIO_HEADER_DIR, turn off DEPLOY_TOOLS, or install the package if you haven't already")
+	endif()
+
+	add_library(CNum_Deploy INTERFACE)
+	add_library(CNum::Deploy ALIAS CNum_Deploy)
+
+	target_include_directories(CNum_Deploy 
+			   		  INTERFACE
+			   		       $<BUILD_INTERFACE:${INCLUDE_DIR}>
+			   		       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+					       $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>)
+
+	install(TARGETS CNum_Deploy
+		EXPORT CNumTargets)
+endif()
+
+if (MSVC)
+	set(LIB_TYPE STATIC)
+else()
+	set(LIB_TYPE SHARED)
+endif()
+
+add_library(CNum ${LIB_TYPE})
+
+if (DEPLOY_TOOLS)
+   target_compile_definitions(CNum PUBLIC DEPLOY_TOOLS)
+endif()
+
+add_subdirectory(src)
 
 add_library(CNum::CNum ALIAS CNum)
 
 if (MSVC)
-	target_compile_options(CNum PUBLIC /fp:fast)
+	target_compile_options(CNum PRIVATE /fp:fast)
 else()	
-	target_compile_options(CNum PUBLIC -Ofast -fno-math-errno -fno-trapping-math -ffp-contract=fast -Wno-terminate)
-	target_link_libraries(CNum PUBLIC pthread atomic)
+	target_compile_options(CNum PRIVATE -Ofast -fno-math-errno -fno-trapping-math -ffp-contract=fast -ffast-math)
 endif()	
 
-include(GNUInstallDirs)
-target_include_directories(CNum PUBLIC
-			   $<BUILD_INTERFACE:${INCLUDE_DIR}>
-			   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+target_include_directories(CNum 
+			   PUBLIC
+			   	$<BUILD_INTERFACE:${INCLUDE_DIR}>
+			   	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 install(TARGETS CNum
 	EXPORT CNumTargets
@@ -46,7 +80,7 @@ install(DIRECTORY ${INCLUDE_DIR}/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/CNum)
 
-include(CMakePackageConfigHelpers)
+
 write_basic_package_version_file("${CMAKE_BINARY_DIR}/CNumConfigVersion.cmake"
 				 VERSION ${PROJECT_VERSION}
 				 COMPATIBILITY SameMajorVersion)
@@ -66,8 +100,10 @@ install(EXPORT CNumTargets
 	NAMESPACE CNum::
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/CNum)
 
-set_target_properties(CNum PROPERTIES
-		      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cnum)
+if (NOT MSVC)
+	set_target_properties(CNum PROPERTIES
+		      		   LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cnum)
+endif()
 
 if (BUILD_TESTS)
    add_subdirectory(${CMAKE_SOURCE_DIR}/tests)

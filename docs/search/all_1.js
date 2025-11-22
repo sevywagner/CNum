@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['abs_0',['abs',['../classCNum_1_1DataStructs_1_1Matrix.html#a56cd210d3791ce900c91a4c398e9e172',1,'CNum::DataStructs::Matrix']]],
+  ['acquire_5fhazard_5fslot_1',['acquire_hazard_slot',['../classCNum_1_1DataStructs_1_1HazardPointer_1_1HazardPtrDomain.html#a0656f06051752dc72f5b66c0abc1f3cc',1,'CNum::DataStructs::HazardPointer::HazardPtrDomain']]],
+  ['activate_2',['activate',['../namespaceCNum_1_1Model_1_1Activation.html#a9c1778d12609e3335c2c18c5a850a1d2',1,'CNum::Model::Activation']]],
+  ['activation_2eh_3',['Activation.h',['../Activation_8h.html',1,'']]],
+  ['activationfunc_4',['ActivationFunc',['../namespaceCNum_1_1Model_1_1Activation.html#a0c15dbb221bb3750ac845ec6c7aa821b',1,'CNum::Model::Activation']]],
+  ['active_5',['active',['../structCNum_1_1DataStructs_1_1HazardPointer_1_1HazardSlot.html#a418af97f91a1d0811efa496a7396b2dd',1,'CNum::DataStructs::HazardPointer::HazardSlot']]],
+  ['add_5finference_5froute_6',['add_inference_route',['../classCNum_1_1Deploy_1_1InferenceAPI.html#a98ab41940c623830b9dae99423b5dcd1',1,'CNum::Deploy::InferenceAPI']]],
+  ['add_5fregular_5froute_7',['add_regular_route',['../classCNum_1_1Deploy_1_1InferenceAPI.html#a79946858370428d1a048919342a1bcaa',1,'CNum::Deploy::InferenceAPI']]],
+  ['apply_5fquantile_8',['apply_quantile',['../namespaceCNum_1_1Data.html#a7e01a41762b98cfd272282b80db4bb97',1,'CNum::Data']]],
+  ['arena_9',['arena',['../structarena.html',1,'']]],
+  ['arena_2eh_10',['Arena.h',['../Arena_8h.html',1,'']]],
+  ['arena_5fblock_5fsize_11',['ARENA_BLOCK_SIZE',['../Arena_8h.html#a76542edd965392f01c15551b1efd1d77',1,'Arena.h']]],
+  ['arena_5fblocks_5fto_5fallocate_12',['arena_blocks_to_allocate',['../structCNum_1_1Multithreading_1_1ThreadPoolConfig.html#a58f64ced73645f301f6c88c1b81d48f7',1,'CNum::Multithreading::ThreadPoolConfig']]],
+  ['arena_5fclear_13',['arena_clear',['../Arena_8h.html#a799e2913993e8cf548f632945b0ce10d',1,'arena_clear():&#160;Arena.h'],['../namespaceCNum_1_1DataStructs_1_1Arena.html#a799e2913993e8cf548f632945b0ce10d',1,'CNum::DataStructs::Arena::arena_clear()']]],
+  ['arena_5ffree_14',['arena_free',['../Arena_8h.html#a61aa127bcb51f54bfc27caa8042f3533',1,'arena_free():&#160;Arena.h'],['../namespaceCNum_1_1DataStructs_1_1Arena.html#a61aa127bcb51f54bfc27caa8042f3533',1,'CNum::DataStructs::Arena::arena_free()']]],
+  ['arena_5finit_15',['arena_init',['../Arena_8h.html#ab47cb524f0957d4208ca0e75a0d8da6f',1,'arena_init():&#160;Arena.h'],['../namespaceCNum_1_1DataStructs_1_1Arena.html#ab47cb524f0957d4208ca0e75a0d8da6f',1,'CNum::DataStructs::Arena::arena_init()']]],
+  ['arena_5fmalloc_16',['arena_malloc',['../Arena_8h.html#a9274f6312562c7763cf8f2c81006e4c4',1,'arena_malloc():&#160;Arena.h'],['../namespaceCNum_1_1DataStructs_1_1Arena.html#a9274f6312562c7763cf8f2c81006e4c4',1,'CNum::DataStructs::Arena::arena_malloc()']]],
+  ['arena_5ft_17',['arena_t',['../Arena_8h.html#a6511b561eba6017d3f09e9ef44b6b500',1,'arena_t:&#160;Arena.h'],['../namespaceCNum_1_1DataStructs.html#a6511b561eba6017d3f09e9ef44b6b500',1,'CNum::DataStructs::arena_t']]],
+  ['arena_5fview_18',['arena_view',['../structarena__view.html',1,'']]],
+  ['arena_5fview_5freset_19',['arena_view_reset',['../Arena_8h.html#a9cc1574545980a9ac976f243427e6818',1,'Arena.h']]],
+  ['arena_5fview_5ft_20',['arena_view_t',['../Arena_8h.html#aae12f4ba9d11b02971a79a8bbcec30a3',1,'arena_view_t:&#160;Arena.h'],['../namespaceCNum_1_1DataStructs.html#aae12f4ba9d11b02971a79a8bbcec30a3',1,'CNum::DataStructs::arena_view_t']]],
+  ['argsort_21',['argsort',['../classCNum_1_1DataStructs_1_1IndexMask.html#a7f2304407d8edbf284764b158ffbaf85',1,'CNum::DataStructs::IndexMask::argsort()'],['../classCNum_1_1DataStructs_1_1Matrix.html#a5c264a5a2d3244a207be6f945a3b4cc6',1,'CNum::DataStructs::Matrix::argsort()']]]
+];

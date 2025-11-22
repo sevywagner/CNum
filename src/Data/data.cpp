@@ -1,10 +1,8 @@
-
 #include "CNum/Data/Data.h"
 
 using namespace CNum::DataStructs;
 
 namespace CNum::Data {
-  // ---- Get data from a CSV file with last column being seperated ----
   std::array< Matrix<double>, 2 > get_data(std::string data_path, char seperator) {
     std::ifstream is(data_path);
   
@@ -55,13 +53,12 @@ namespace CNum::Data {
   void PCA(std::string input_path, std::string output_path) {
     // PCA coming soon
   }
-
-  // ---- Uniform binning of data ----
-  std::shared_ptr<struct shelf[]> uniform_bin(const Matrix<double> &data, size_t num_bins) {
-    std::shared_ptr<struct shelf[]> shelves(new struct shelf[data.get_cols()]);
+  
+  std::shared_ptr<Shelf[]> uniform_bin(const Matrix<double> &data, size_t num_bins) {
+    std::shared_ptr<Shelf[]> shelves(new Shelf[data.get_cols()]);
 
     for (int i = 0; i < data.get_cols(); i++) {
-      shelves[i] = shelf(num_bins);
+      shelves[i] = Shelf(num_bins);
       auto col = data.get(COL, i);
 
       double min = col.get(0, 0);
@@ -97,13 +94,13 @@ namespace CNum::Data {
     return shelves;
   }
 
-  // ---- Quantile sketch *not exact quantile bins* ----
-  std::shared_ptr<struct shelf[]> quantile_bin(const Matrix<double> &data, size_t num_bins) {
+  
+  std::shared_ptr<Shelf[]> quantile_bin(const Matrix<double> &data, size_t num_bins) {
     auto shelves = uniform_bin(std::cref(data), num_bins);
-    std::shared_ptr<struct shelf[]> new_shelves(new struct shelf[data.get_cols()]);
+    std::shared_ptr<Shelf[]> new_shelves(new Shelf[data.get_cols()]);
 
     for (int i = 0; i < data.get_cols(); i++) {
-      new_shelves[i] = shelf(num_bins);
+      new_shelves[i] = Shelf(num_bins);
     
       auto cumulative_sum = std::make_unique<int[]>(num_bins);
       int sum = 0;
@@ -141,8 +138,8 @@ namespace CNum::Data {
     return new_shelves;
   }
 
-  // ---- Construct data matrix of bin values ----
-  Matrix<int> apply_quantile(const Matrix<double> &data, std::shared_ptr<struct shelf[]> shelves) {
+  
+  Matrix<int> apply_quantile(const Matrix<double> &data, std::shared_ptr<Shelf[]> shelves) {
     std::vector< Matrix<int> > cols;
     std::vector< std::future< Matrix<int> > > workers;
     workers.reserve(data.get_cols());

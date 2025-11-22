@@ -1,16 +1,7 @@
-#include <utility>
-#include <iostream>
-#include <thread>
-#include <vector>
-#include <atomic>
-#include <cstring>
-#include <execution>
-
 //---------------
 // Constructors
 //---------------
 
-// ---- Default Overloaded Constructor ----
 template <typename T>
 Matrix<T>::Matrix(size_t rows, size_t cols, ::std::unique_ptr<T[]> ptr)
   : _cols(cols), _rows(rows), _data(::std::move(ptr))  {
@@ -19,9 +10,8 @@ Matrix<T>::Matrix(size_t rows, size_t cols, ::std::unique_ptr<T[]> ptr)
   }
 }
 
-// ---- Copy Logic ----
 template <typename T>
-void Matrix<T>::copy(const Matrix &other) {
+void Matrix<T>::copy(const Matrix &other) noexcept {
   if (this == &other) return;
 
   this->_rows = other._rows;
@@ -34,48 +24,43 @@ void Matrix<T>::copy(const Matrix &other) {
   ::std::copy(other._data.get(), other._data.get() + other._rows * other._cols, this->_data.get());
 }
 
-// ---- Copy Constructor ----
 template <typename T>
 Matrix<T>::Matrix(const Matrix &other) noexcept {
   this->copy(::std::cref(other));
 }
 
-// ---- Copy Assignment ----
 template <typename T>
 Matrix<T> &Matrix<T>::operator=(const Matrix &other) noexcept {
   this->copy(::std::cref(other));
   return *this;
 }
 
-// ---- Move Logic ----
 template <typename T>
-void Matrix<T>::move(Matrix<T> &&other) {
+void Matrix<T>::move(Matrix<T> &&other) noexcept {
   if (this == &other) {
     return;
   }
 
   this->_rows = other._rows;
   other._rows = 0;
+  
   this->_cols = other._cols;
   other._cols = 0;
 
   this->_data = ::std::move(other._data);
 }
 
-// ---- Move Constructor ----
 template <typename T>
 Matrix<T>::Matrix(Matrix &&other) noexcept {
   this->move(::std::move(other));
 }
 
-// ---- Move Assignment ----
 template <typename T>
 Matrix<T> &Matrix<T>::operator=(Matrix &&other) noexcept {
   this->move(::std::move(other));
   return *this;
 }
 
-// ---- Destructor ----
 template <typename T>
 Matrix<T>::~Matrix() {}
 
@@ -83,13 +68,11 @@ Matrix<T>::~Matrix() {}
 // Linear Algebra
 //-----------------
 
-// ---- Parrallel element wise operation abstraction ----
 template <typename T>
 Matrix<T> Matrix<T>::element_wise(T val, ::std::function< void(T &, T) > func) const noexcept {
   Matrix<T> res(*this);
   
-  ::std::for_each(::std::execution::par_unseq,
-		  res._data.get(),
+  ::std::for_each(res._data.get(),
 		  res._data.get() + res._rows * res._cols,
 		  [&func, &val] (T &t) {
 		    func(t, val);
@@ -98,8 +81,6 @@ Matrix<T> Matrix<T>::element_wise(T val, ::std::function< void(T &, T) > func) c
   return res;
 }
 
-
-// ---- Dot Product ----
 template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix &other) const {
   if (this->_cols != other._rows) {
@@ -124,7 +105,6 @@ Matrix<T> Matrix<T>::operator*(const Matrix &other) const {
   return res;
 }
 
-// ---- Scale ----
 template <typename T>
 Matrix<T> Matrix<T>::operator*(T scale_factor) const noexcept {
   return element_wise(scale_factor, [] (T &a, T b) {
@@ -132,7 +112,6 @@ Matrix<T> Matrix<T>::operator*(T scale_factor) const noexcept {
   });
 }
 
-// ---- Vector dot product ----
 template <typename T>
 T Matrix<T>::dot(const Matrix<T> &other) const {
   if (this->_rows != other._rows || this->_cols > 1 || other._cols) {
@@ -147,7 +126,6 @@ T Matrix<T>::dot(const Matrix<T> &other) const {
   return sum;
 }
 
-// ---- Parrellel Execution Abstraction ----
 // Data must be aligned to the cache-line size to avoid false sharing
 template <typename T>
 void Matrix<T>::par_execute(uint8_t n_threads,
@@ -174,7 +152,6 @@ void Matrix<T>::par_execute(uint8_t n_threads,
     f.wait();
 }
 
-// ---- Matrix Addition ----
 template <typename T>
 Matrix<T> Matrix<T>::operator+(const Matrix &other) const {
   if (this->_rows != other._rows || this->_cols != other._cols) {
@@ -191,7 +168,6 @@ Matrix<T> Matrix<T>::operator+(const Matrix &other) const {
   return Matrix<T>(this->_rows, this->_cols, ::std::move(sum_ptr));
 }
 
-// ---- Element wise value addition ----
 template <typename T>
 Matrix<T> Matrix<T>::operator+(T a) const noexcept {
   return element_wise(a, [] (T &b, T c) {
@@ -199,7 +175,6 @@ Matrix<T> Matrix<T>::operator+(T a) const noexcept {
   });
 }
 
-// ---- Matrix Subtraction ----
 template <typename T>
 Matrix<T> Matrix<T>::operator-(const Matrix &other) const {
   if (this->_rows != other._rows || this->_cols != other._cols) {
@@ -216,7 +191,6 @@ Matrix<T> Matrix<T>::operator-(const Matrix &other) const {
   return Matrix<T>(this->_rows, this->_cols, ::std::move(sum_ptr));
 }
 
-// ---- Element wise value subtraction ----
 template <typename T>
 Matrix<T> Matrix<T>::operator-(T a) const noexcept {
   return element_wise(a, [] (T &b, T c) {
@@ -224,7 +198,6 @@ Matrix<T> Matrix<T>::operator-(T a) const noexcept {
   });
 }
 
-// ---- Identity Matrix ----
 template <typename T>
 Matrix<T> Matrix<T>::identity(size_t dim) {
   Matrix<T> res(dim, dim);
@@ -238,21 +211,17 @@ Matrix<T> Matrix<T>::identity(size_t dim) {
   return res;
 }
 
-// ---- Absolute value ----
 template <typename T>
 Matrix<T> Matrix<T>::abs() const {
   return element_wise(0, [] (T &val, T _) { val = ::std::abs(val); });
 }
 
-// ---- Sum ----
 template <typename T>
 T Matrix<T>::sum() const {
-  return ::std::reduce(::std::execution::seq,
-		       _data.get(),
+  return ::std::reduce(_data.get(),
 		       _data.get() + _rows * _cols);
 }
 
-// ---- Mean ----
 template <typename T>
 T Matrix<T>::mean() const {
   if (_cols > 1) {
@@ -262,7 +231,6 @@ T Matrix<T>::mean() const {
   return this->sum() / _rows;
 }
 
-// ---- Standard Deviation ----
 template <typename T>
 T Matrix<T>::std() const {
   if (_cols > 1) {
@@ -280,7 +248,6 @@ T Matrix<T>::std() const {
   return sd / _rows;
 }
 
-// ---- Element Wise Square ----
 template <typename T>
 Matrix<T> Matrix<T>::squared() const {
   return element_wise(0, [] (T &a, T b) {
@@ -288,7 +255,6 @@ Matrix<T> Matrix<T>::squared() const {
   });
 }
 
-// ---- Standardize Matrix ----
 template <typename T>
 Matrix<T> Matrix<T>::standardize() const {
   Matrix<T> res(_rows, _cols);
@@ -317,86 +283,52 @@ Matrix<T> Matrix<T>::standardize() const {
 // Masking
 // --------------
 
-// ---- Create Mask ----
 template <typename T>
-Mask<BIN, bool> Matrix<T>::comparison_mask(::std::function< bool(const T &a, const T &b) > comp, T val) const {
-  if (_cols > 1) {
-    throw ::std::invalid_argument("Comparison mask only supported for 1 dimension i.e. Matrix<T>(x, 1)");
-  }
-
-  auto res = ::std::make_unique<bool[]>(_rows);
-  ::std::atomic<int> num_pos = 0;
-
-  size_t total_el = _rows;
-  uint8_t n_threads = 5;
-
-  par_execute(n_threads, total_el, [res_ptr = res.get(),
-				    data_ptr = _data.get(),
-				    &num_pos,
-				    comp,
-				    val] (size_t i) {
-    bool comp_res = comp(data_ptr[i], val);
-    res_ptr[i] = comp_res;
-
-    if (comp_res) {
-      num_pos++;
-    }
-  });
-
-  return Mask<BIN, bool>(_rows, num_pos, ::std::move(res));
+BinaryMask Matrix<T>::operator<(T val) const {
+  return BinaryMask::create_binary_mask_matrix< T, ::std::less<T> >(*this, val);
 }
 
 template <typename T>
-Mask<BIN, bool> Matrix<T>::operator<(T val) const {
-  return comparison_mask([] (const T &a, const T &b) { return a < b; }, val);
+BinaryMask Matrix<T>::operator<=(T val) const {
+  return BinaryMask::create_binary_mask_matrix< T, ::std::less_equal<T> >(*this, val);
 }
 
 template <typename T>
-Mask<BIN, bool> Matrix<T>::operator<=(T val) const {
-  return comparison_mask([] (const T &a, const T &b) { return a <= b; }, val);
+BinaryMask Matrix<T>::operator>(T val) const {
+  return BinaryMask::create_binary_mask_matrix< T, ::std::greater<T> >(*this, val);
 }
 
 template <typename T>
-Mask<BIN, bool> Matrix<T>::operator>(T val) const {
-  return comparison_mask([] (const T &a, const T &b) { return a > b; }, val);
+BinaryMask Matrix<T>::operator>=(T val) const {
+  return BinaryMask::create_binary_mask_matrix< T, ::std::greater_equal<T> >(*this, val);
 }
 
 template <typename T>
-Mask<BIN, bool> Matrix<T>::operator>=(T val) const {
-  return comparison_mask([] (const T &a, const T &b) { return a >= b; }, val);
+BinaryMask Matrix<T>::operator==(T val) const {
+  return BinaryMask::create_binary_mask_matrix< T, ::std::equal_to<T> >(*this, val);
 }
 
 template <typename T>
-Mask<BIN, bool> Matrix<T>::operator==(T val) const {
-  return comparison_mask([] (const T &a, const T &b) { return a == b; }, val);
+BinaryMask Matrix<T>::operator!=(T val) const {
+  return BinaryMask::create_binary_mask_matrix< T, ::std::not_equal_to<T> >(*this, val);
 }
 
 template <typename T>
-Mask<BIN, bool> Matrix<T>::operator!=(T val) const {
-  return comparison_mask([] (const T &a, const T &b) { return a != b; }, val);
+Matrix<T> Matrix<T>::col_wise_mask_application(const IndexMask &idx_mask) const noexcept {
+  return idx_mask.matrix_apply_mask_col_wise< T >(*this);
 }
 
-// ---- Apply index mask column wise ----
 template <typename T>
-Matrix<T> Matrix<T>::col_wise_mask_application(const Mask<IDX, uint32_t> &idx_mask) const noexcept {
-  auto masked_ptr = ::std::make_unique<T[]>(idx_mask.get_len() * _rows);
-  auto *masked_ptr_raw = masked_ptr.get();
-  
-  for (size_t i = 0; i < idx_mask.get_len(); i++) {
-    size_t idx = idx_mask[i];
-    auto col_view = this->get_col_view(idx);
-    auto col_view_it = col_view.begin();
-      
-    for (size_t j = 0; j < _rows; j++) {
-      masked_ptr_raw[j * idx_mask.get_len() + i] = *col_view_it;
-      ++col_view_it;
-    }
-  }
+T Matrix<T>::operator[](size_t idx) const {
+  if (_cols > 1)
+    ::std::invalid_argument("Matrix indexing error - this function is only for Matrices of shape (n, 1)");
 
-  return Matrix<T>(_rows, idx_mask.get_len(), ::std::move(masked_ptr));
+  if (idx > _rows)
+    ::std::invalid_argument("Matrix indexing error - idx out of bounds");
+
+  return _data[idx];
 }
 
-// ---- Indexing ----
 template <typename T>
 T Matrix<T>::get(size_t row, size_t col) const {
   if (row >= _rows || row < 0 || col >= _cols || col < 0) {
@@ -407,9 +339,8 @@ T Matrix<T>::get(size_t row, size_t col) const {
   return _data[row * _cols + col];
 }
 
-// ---- Get Row/Col ----
 template <typename T>
-Matrix<T> Matrix<T>::get(enum dim d, size_t idx) const {
+Matrix<T> Matrix<T>::get(Dim d, size_t idx) const {
   if (d == ROW) {
     if (idx >= _rows) {
       throw ::std::out_of_range("Row indexing error - index out of bounds");
@@ -460,62 +391,22 @@ template <typename T>
   return std::span<T>(_data.get() + (_cols * idx), _cols);
 }
 
-// ---- Apply Binary Mask ----
 template <typename T>
-Matrix<T> Matrix<T>::operator[](const Mask<BIN, bool> &m) const {
-  if (m.get_len() != _rows) {
-    throw ::std::out_of_range("Binary mask application error -- Misaligned dims");
-  }
-  
-  auto res = ::std::make_unique<T[]>(m.get_num_positive() * _cols);
-  T *res_ptr = res.get();
-  T *this_ptr = _data.get();
-  const bool *mask_ptr = m.get_ptr();
-  
-  for (size_t i = 0; i < m.get_len(); i++) {
-    if (*mask_ptr) {
-      ::std::copy(this_ptr, this_ptr + _cols, res_ptr);
-      res_ptr += _cols;
-    }
-
-    this_ptr += _cols;
-    mask_ptr++;
-  }
-
-  return Matrix<T>(m.get_num_positive(), _cols, ::std::move(res));
+Matrix<T> Matrix<T>::operator[](const BinaryMask &m) const {
+  return m.mask(*this);
 }
 
-// ---- Apply Idx Mask ----
 template <typename T>
-Matrix<T> Matrix<T>::operator[](const Mask<IDX, uint32_t> &idx_mask) const noexcept {
-  int mask_len = idx_mask.get_len();
-  auto res = ::std::make_unique<T[]>(mask_len * _cols);
-
-  for (size_t i = 0; i < mask_len; i++) {
-    std::copy(_data.get() + (idx_mask[i]) * _cols,
-	      _data.get() + (idx_mask[i] + 1) * _cols,
-	      res.get() + i * _cols);
-  };
-  
-  return Matrix<T>(mask_len, _cols, ::std::move(res));
+Matrix<T> Matrix<T>::operator[](const IndexMask &idx_mask) const noexcept {
+  return idx_mask.matrix_apply_mask< T >(*this);
 }
 
-
-// ---- Argsort ----
 template <typename T>
-Mask<IDX, uint32_t> Matrix<T>::argsort() const {
-  if (_cols != 1) {
-    throw ::std::invalid_argument("Argsort error - argsort only supported for 1 dimension");
-  }
-  
-  auto mask = ::std::make_unique<uint32_t[]>(_rows);
-  ::std::iota(mask.get(), mask.get() + _rows, 0);
+IndexMask Matrix<T>::argsort(bool descending) const {
+  if (descending)
+    return IndexMask::argsort< Matrix<T>, T, ::std::less<T> >(*this);
 
-  ::std::sort(::std::execution::par, mask.get(), mask.get() + _rows, [&] (uint32_t a, uint32_t b) {
-    return _data[a] < _data[b];
-  });
-
-  return Mask<IDX, uint32_t>(_rows, 0, ::std::move(mask));
+  return IndexMask::argsort< Matrix<T>, T, ::std::greater<T> >(*this);
 }
 
 // -------------------
@@ -558,14 +449,29 @@ Matrix<T> Matrix<T>::join_cols(::std::vector< Matrix<T> > &cols) {
 }
 
 template <typename T>
+Matrix<T> Matrix<T>::combine_vertically(::std::vector< Matrix<T> > &matrices, size_t total_rows) {
+  size_t cols = matrices[0].get_cols();
+
+  auto res_data = ::std::make_unique<T[]>(total_rows * cols);
+  size_t res_pos{ 0 };
+  for (auto &m: matrices) {
+    ::std::move(m.begin(), m.end(), res_data.get() + res_pos);
+    res_pos += m.get_rows() * cols;
+  }
+
+  return Matrix<T>(total_rows, cols, ::std::move(res_data));
+}
+
+template <typename T>
 Matrix<T> Matrix<T>::init_const(size_t rows, size_t cols, T val) {
   auto res = ::std::make_unique<T[]>(rows * cols);
-  ::std::fill(::std::execution::par_unseq, res.get(), res.get() + rows * cols, val);
+  ::std::fill(res.get(), res.get() + rows * cols, val);
   return Matrix<T>(rows, cols, ::std::move(res));
 }
 
 template <typename T>
 size_t Matrix<T>::get_rows() const { return _rows; }
+
 template <typename T>
 size_t Matrix<T>::get_cols() const { return _cols; }
 
@@ -574,6 +480,15 @@ T *Matrix<T>::begin() { return _data.get(); }
 
 template <typename T>
 T *Matrix<T>::end() { return _data.get() + _rows * _cols; }
+
+template <typename T>
+const T *Matrix<T>::begin() const { return _data.get(); }
+
+template <typename T>
+const T *Matrix<T>::end() const { return _data.get() + _rows * _cols; }
+
+template <typename T>
+size_t Matrix<T>::size() const { return _rows; }
 
 template <typename T>
 ::std::unique_ptr<T[]> &&Matrix<T>::move_ptr() {

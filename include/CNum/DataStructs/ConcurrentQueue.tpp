@@ -10,6 +10,7 @@ void ConcurrentQueue<T>::enqueue(T val) {
   _cv.notify_one();
 }
 
+
 template <typename T>
 bool ConcurrentQueue<T>::dequeue(T &val) {
   ::std::unique_lock<std::mutex> ul(_mtx);
@@ -25,7 +26,6 @@ bool ConcurrentQueue<T>::dequeue(T &val) {
   return true;
 }
 
-// ---- Set stop flag for thread pool ----
 template <typename T>
 void ConcurrentQueue<T>::set_stop() {
   std::lock_guard<std::mutex> lg(_mtx);
@@ -33,12 +33,13 @@ void ConcurrentQueue<T>::set_stop() {
   _cv.notify_all();
 }
 
-// ---- Check stop flag for thread pool ----
+
 template <typename T>
 bool ConcurrentQueue<T>::stop_is_set() {
   std::lock_guard<std::mutex> lg(_mtx);
   return _stop;
 }
+
 
 template <typename T>
 bool ConcurrentQueue<T>::empty() {

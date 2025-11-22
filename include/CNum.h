@@ -1,5 +1,5 @@
-#ifndef __CNUM_H
-#define __CNUM_H
+#ifndef CNUM_H
+#define CNUM_H
 
 #include "CNum/DataStructs/DataStructs.h"
 #include "CNum/Data/Data.h"
@@ -7,6 +7,14 @@
 #include "CNum/Multithreading/Multithreading.h"
 #include "CNum/Model/Model.h"
 
+#ifdef DEPLOY_TOOLS
+#include "CNum/Deploy/Deploy.h"
+#endif
+
+/**
+ * @namespace CNum
+ * @brief The umbrella namespace from which you can access all modules of CNum
+ */
 namespace CNum {};
 
 #endif

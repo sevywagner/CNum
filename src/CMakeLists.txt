@@ -1,0 +1,5 @@
+add_subdirectory(Data)
+add_subdirectory(DataStructs)
+add_subdirectory(Model)
+add_subdirectory(Multithreading)
+add_subdirectory(Utils)

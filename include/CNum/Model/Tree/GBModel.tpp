@@ -2,7 +2,6 @@
 // Constructors and destructors
 // ------------------------------
 
-// Overloaded constructor
 template <typename TreeType>
 GBModel<TreeType>::GBModel(::std::string lt,
 			   int n_learners,
@@ -10,11 +9,12 @@ GBModel<TreeType>::GBModel(::std::string lt,
 			   double ss,
 			   int md,
 			   int ms,
-			   enum split_alg sa,
+			   SplitAlg sa,
 			   ::std::string activation_func,
 			   double weight_decay,
 			   double rl,
-			   double gamma)
+			   double gamma,
+			   SubsampleFunction ssf)
   : _loss_type(lt),
     _n_learners(n_learners),
     _learning_rate(lr),
@@ -25,11 +25,102 @@ GBModel<TreeType>::GBModel(::std::string lt,
     _weight_decay(weight_decay),
     _activation(activation_func),
     _reg_lambda(rl),
-    _gamma(gamma) {
+    _gamma(gamma),
+    _subsample_function(ssf) {
   _trees = new TreeType[n_learners];
+  _loss_profile = CNum::Model::Loss::get_loss_profile(lt);
+  if (!_activation.empty())
+  _activation_func = CNum::Model::Activation::get_activation_func(activation_func);
 }
 
-// ---- Destructor ----
+template <typename TreeType>
+GBModel<TreeType>::GBModel(CNum::Model::Loss::LossProfile loss_profile,
+			   int n_learners,
+			   double lr,
+			   double ss,
+			   int md,
+			   int ms,
+			   SplitAlg sa,
+			   CNum::Model::Activation::ActivationFunc activation_func,
+			   double weight_decay,
+			   double rl,
+			   double gamma,
+			   SubsampleFunction ssf)
+  : _loss_type(""),
+    _loss_profile(loss_profile),
+    _n_learners(n_learners),
+    _learning_rate(lr),
+    _subsample(ss),
+    _max_depth(md),
+    _min_samples(ms),
+    _sa(sa),
+    _weight_decay(weight_decay),
+    _activation(""),
+    _reg_lambda(rl),
+    _gamma(gamma),
+    _subsample_function(ssf) {
+  _trees = new TreeType[n_learners];
+  if (activation_func)
+    _activation_func = activation_func;
+}
+
+template <typename TreeType>
+void GBModel<TreeType>::copy_hyperparams(const GBModel &other) noexcept {
+  this->_loss_type = other._loss_type;
+  this->_n_learners = other._n_learners;
+  this->_learning_rate = other._learning_rate;
+  this->_subsample = other._subsample;
+  this->_max_depth = other._max_depth;
+  this->_min_samples = other._min_samples;
+  this->_sa = other._sa;
+  this->_weight_decay = other._weight_decay;
+  this->_activation = other._activation;
+  this->_reg_lambda = other._reg_lambda;
+  this->_gamma = other._gamma;
+}
+
+template <typename TreeType>
+void GBModel<TreeType>::copy(const GBModel &other) noexcept {
+  if (this == &other) return;
+  this->copy_hyperparams(::std::cref(other));
+
+  if (this->_trees != nullptr)
+    delete[] this->_trees;
+
+  this->_trees = new TreeType[this->_n_learners];
+  ::std::copy(other._trees, other._trees + other._n_learners, this->_trees);
+}
+
+template <typename TreeType>
+void GBModel<TreeType>::move(GBModel &&other) noexcept {
+  if (this == &other) return;
+  this->copy_hyperparams(::std::cref(other));
+
+  this->_trees = ::std::exchange(other._trees, nullptr);
+}
+
+template <typename TreeType>
+GBModel<TreeType>::GBModel(const GBModel &other) noexcept {
+  this->copy(::std::cref(other));
+}
+
+template <typename TreeType>
+GBModel<TreeType> &GBModel<TreeType>::operator=(const GBModel &other) noexcept {
+  this->copy(::std::cref(other));
+  return *this;
+}
+
+template <typename TreeType>
+GBModel<TreeType>::GBModel(GBModel &&other) noexcept {
+  this->move(::std::move(other));
+}
+
+template <typename TreeType>
+GBModel<TreeType> &GBModel<TreeType>::operator=(GBModel &&other) noexcept {
+  this->move(::std::move(other));
+  return *this;
+}
+
 template <typename TreeType>
 GBModel<TreeType>::~GBModel() {
   delete[] _trees;
@@ -39,25 +130,22 @@ GBModel<TreeType>::~GBModel() {
 // Training and inference
 // ------------------------
 
-// ---- Train Model ----
 template <typename TreeType>
 void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
 			    CNum::DataStructs::Matrix<double> &y) {
   auto *tp = CNum::Multithreading::ThreadPool::get_thread_pool();
 
   auto a = tp->submit< void >([&, this] (arena_t *arena) {
-    ::std::shared_ptr<struct CNum::Data::shelf[]> shelves = _sa == GREEDY ? nullptr : CNum::Data::quantile_bin(::std::cref(X), N_BINS);
+    ::std::shared_ptr<CNum::Data::Shelf[]> shelves = _sa == GREEDY ? nullptr : CNum::Data::quantile_bin(::std::cref(X), N_BINS);
 
       DataMatrix data = apply_quantile(::std::cref(X), shelves).transpose();
 
       CNum::DataStructs::Matrix<double> fm = CNum::DataStructs::Matrix<double>::init_const(y.get_rows(), 1, 0);
-      auto *loss = Loss::get_loss_obj();
 
       ::std::visit([&, this] (auto &x) {
 	using T = ::std::decay_t<decltype(x)>;
       
-	size_t n_samples = ::std::min(static_cast<int>(_subsample * X.get_rows()),
-				      static_cast<int>(X.get_rows()));
+	size_t n_samples = ::std::min(static_cast<size_t>(_subsample * X.get_rows()), X.get_rows());
       
 	for (int i = 0; i < _n_learners; i++) {
 	  arena_view_t position_array = arena_malloc(arena, sizeof(size_t) * n_samples, sizeof(size_t));
@@ -68,18 +156,17 @@ void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
 	  double *g_sub_ptr = (double *) g_sub.ptr;
 	  double *h_sub_ptr = (double *) h_sub.ptr;
 
-	  if (_subsample == 1.0) {
-	    ::std::iota(pos_ptr, pos_ptr + n_samples, 0);
-	  } else {
-	    CNum::Utils::Rand::generate_n_unique_rand_in_range<size_t>(0,
-								       X.get_rows() - 1,
-								       pos_ptr,
-								       n_samples);
-	  }
+	  _subsample_function(pos_ptr, 0, X.get_rows(), n_samples, ::std::cref(y));
      
 	  DataPartition partition{ &position_array, 0, n_samples };
 
-	  loss->get_gradients_hessians(y, fm, g_sub, h_sub, position_array, _loss_type);
+	  CNum::Model::Loss::get_gradients_hessians(y,
+						    fm,
+						    g_sub,
+						    h_sub,
+						    position_array,
+						    _loss_profile.gradient_func,
+						    _loss_profile.hessian_func);
 
 	  _trees[i] = TreeType(arena,
 			       _max_depth,
@@ -95,7 +182,7 @@ void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
       
 	  if (i % 5 == 0) {
 	    ::std::cout << "[*] Learner #" << i << " loss: "
-			<< loss->get_loss(y, fm, _loss_type) << ::std::endl;
+			<< _loss_profile.loss_func(y, fm) << ::std::endl;
 	  }
 
 	  arena_clear(arena);
@@ -106,7 +193,6 @@ void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
   a.wait();
 }
 
-// ---- Inference ----
 template <typename TreeType>
 CNum::DataStructs::Matrix<double> GBModel<TreeType>::predict(CNum::DataStructs::Matrix<double> &data) {
   auto preds = CNum::DataStructs::Matrix<double>::init_const(data.get_rows(), 1, 0);
@@ -116,9 +202,8 @@ CNum::DataStructs::Matrix<double> GBModel<TreeType>::predict(CNum::DataStructs::
     preds = preds + (t_preds * _learning_rate);
   });
 
-  if (_activation.size() > 0) {
-    auto *act = Activation::get_activation_obj();
-    preds = act->activate(preds, _activation);
+  if (_activation_func) {
+    preds = CNum::Model::Activation::activate(preds, _activation_func);
   }
   
   return preds;
@@ -128,7 +213,6 @@ CNum::DataStructs::Matrix<double> GBModel<TreeType>::predict(CNum::DataStructs::
 // Saving and loading models
 // ----------------------------
 
-// ---- Save Model to JSON encoded ".cmod" file ----
 template <typename TreeType>
 void GBModel<TreeType>::save_model(::std::string path) {
   ::std::string json_str("{\"loss_type\":\"");
@@ -155,18 +239,21 @@ void GBModel<TreeType>::save_model(::std::string path) {
   ::std::ofstream of(path);
 
   if (!of.is_open()) {
-    ::std::runtime_error("GB model saving error - Error opening file");
+    throw ::std::runtime_error("GB model saving error - Error opening file");
   }
 
   of << json_str;
 }
 
-// ---- Parse singular json learner ----
 template <typename TreeType>
 TreeBoosterNode *GBModel<TreeType>::parse_learner(json node) {
   auto *res = new TreeBoosterNode();
   
-  res->_split = { node["split"]["feature"], node["split"]["threshold"], 1e-4, 0, { 0, 0 } };
+  res->_split = Split{ node["split"]["feature"],
+		       node["split"]["threshold"],
+		       1e-4,
+		       0,
+		       SplitValuePair{ 0, 0 } };
   res->_value = node["value"];
   res->_left = node["left"].dump() == "{}" ? nullptr : parse_learner(node["left"]);
   res->_right = node["right"].dump() == "{}" ? nullptr : parse_learner(node["right"]);
@@ -174,15 +261,12 @@ TreeBoosterNode *GBModel<TreeType>::parse_learner(json node) {
   return res;
 }
 
-#include "CNum/Utils/ModelUtils.h"
-
-// ---- Load Model from JSON encoded ".cmod" file ----
 template <typename TreeType>
 GBModel<TreeType> GBModel<TreeType>::load_model(::std::string path) {
   ::std::ifstream is(path);
 
   if (!is.is_open()) {
-    ::std::runtime_error("GB model loading error - file could not be opened");
+    throw ::std::runtime_error("GB model loading error - file could not be opened");
   }
 
   json data = json::parse(is);
@@ -192,7 +276,7 @@ GBModel<TreeType> GBModel<TreeType>::load_model(::std::string path) {
 			data["subsample"],
 			data["max_depth"],
 			data["min_samples"],
-			HIST,
+			HIST, // As of now there is only HIST, but GREEDY will come in next release
 			data["activation"],
 			data["weight_decay"],
 			data["reg_lambda"],
@@ -202,7 +286,7 @@ GBModel<TreeType> GBModel<TreeType>::load_model(::std::string path) {
   int ctr = 0;
   for (auto &[key, value]: learners.items()) {
     auto *tree = GBModel<TreeType>::parse_learner(value);
-    res._trees[ctr]._root = ::std::exchange(tree, nullptr);
+    res._trees[ctr].set_root(::std::exchange(tree, nullptr));
     ctr++;
   }
   

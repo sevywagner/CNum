@@ -1,10 +1,13 @@
-#ifndef __UTILS_H
-#define __UTILS_H
+#ifndef UTILS_H
+#define UTILS_H
 
-#include "CNum/Utils/ModelUtils.h"
 #include "CNum/Utils/RandUtils.h"
-#include "CNum/Model/Model.h"
+#include "CNum/Utils/ModelUtils.h"
 
+/**
+ * @namespace CNum::Utils
+ * @brief Utilities
+ */
 namespace CNum::Utils {};
 
 #endif

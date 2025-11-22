@@ -16,12 +16,12 @@ namespace CNum::Utils::ModelUtils {
     int test_len = X.get_rows() - train_len;
   
     if (shuffle) {
-      auto mask = std::make_unique<uint32_t[]>(X.get_rows());
+      auto mask = std::make_unique<size_t[]>(X.get_rows());
 
       std::iota(mask.get(), mask.get() + X.get_rows(), 0);
       std::shuffle(mask.get(), mask.get() + X.get_rows(), std::mt19937{std::random_device{}()});
 
-      Mask<IDX, uint32_t> m(X.get_rows(), 0, std::move(mask));
+      IndexMask m(std::move(mask), X.get_rows());
     
       x_use = X[m];
       y_use = y[m];
@@ -30,13 +30,13 @@ namespace CNum::Utils::ModelUtils {
       y_use = y;
     }
 
-    auto train_mask_ptr = std::make_unique<uint32_t[]>(train_len);
+    auto train_mask_ptr = std::make_unique<size_t[]>(train_len);
     std::iota(train_mask_ptr.get(), train_mask_ptr.get() + train_len, 0);
-    Mask<IDX, uint32_t> train_mask(train_len, 0, std::move(train_mask_ptr));
+    IndexMask train_mask(std::move(train_mask_ptr), train_len);
 
-    auto test_mask_ptr = std::make_unique<uint32_t[]>(test_len);
+    auto test_mask_ptr = std::make_unique<size_t[]>(test_len);
     std::iota(test_mask_ptr.get(), test_mask_ptr.get() + test_len, train_len);
-    Mask<IDX, uint32_t> test_mask(test_len, 0, std::move(test_mask_ptr));
+    IndexMask test_mask(std::move(test_mask_ptr), test_len);
 
     res[0] = x_use[train_mask];
     res[1] = x_use[test_mask];

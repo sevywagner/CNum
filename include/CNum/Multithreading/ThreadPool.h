@@ -1,49 +1,67 @@
-#ifndef __THREAD_POOL_H
-#define __THREAD_POOL_H
+#ifndef THREAD_POOL_H
+#define THREAD_POOL_H
 
 #include "CNum/DataStructs/ConcurrentQueue.h"
-#include "CNum/Multithreading/Multithreading.h"
 #include "CNum/DataStructs/Memory/Arena.h"
 
 #include <functional>
 #include <vector>
 #include <thread>
-#include <iostream>
 #include <mutex>
-#include <condition_variable>
 #include <future>
-#include <memory>
 
+/**
+ * @namespace CNum::Multithreading
+ * @brief Structures and algorithms used for multithreaded operations
+ */
 namespace CNum::Multithreading {
   using Func = std::function< void(arena_t *) >;
-  constexpr size_t default_arena_init_block_ct = 500000;
 
-  struct thread_pool_config {
+  /// @brief The default amount of blocks allocated to a newly initialized arena
+  constexpr size_t default_arena_init_block_ct = 16500;
+
+  /// @brief The configuration of the ThreadPool
+  struct ThreadPoolConfig {
     size_t arena_blocks_to_allocate;
   };
 
+  /**
+   * @class ThreadPool
+   * @brief A promise based thread pool
+   */
   class ThreadPool {
   private:
-    CNum::DataStructs::ConcurrentQueue< Func > _q;
+    ::CNum::DataStructs::ConcurrentQueue< Func > _q;
     int _num_threads;
     std::vector<std::thread> _threads;
     std::mutex _mtx;
 
-    void worker(thread_pool_config config);
+    /// @brief The worker used for each thread in the pool
+    /// @param The configuration of the ThreadPool
+    void worker(ThreadPoolConfig config);
+
+    /// @brief Shut the ThreadPool down
     void shutdown();
 
-    ThreadPool(thread_pool_config config);
+    /// @brief Overloaded constructor
+    ThreadPool(ThreadPoolConfig config);
   
 
   public:
-    static ThreadPool *get_thread_pool(thread_pool_config config = { default_arena_init_block_ct });
-    ~ThreadPool();
+    /// @brief Get the instance of the ThreadPool singleton
+    /// @param config The configuration of the ThreadPool
+    /// @return A raw pointer to the instance of the ThreadPool
+    static ThreadPool *get_thread_pool(ThreadPoolConfig config = { default_arena_init_block_ct });
+    ~ThreadPool() = default;
   
     ThreadPool(const ThreadPool &other) = delete;
     ThreadPool &operator=(const ThreadPool &other) = delete;
     ThreadPool(ThreadPool &&other) = delete;
     ThreadPool &operator=(ThreadPool &&other) = delete;
 
+    /// @brief Submit a task to the ThreadPool
+    /// @param f The task
+    /// @return A future that will contain whatever the task returns
     template<typename T>
     std::future<T> submit(std::function< T(arena_t *arena) > f) {
       auto p = std::make_shared< std::promise<T> >();

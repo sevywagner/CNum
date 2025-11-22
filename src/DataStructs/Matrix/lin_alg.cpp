@@ -1,15 +1,13 @@
 #include "CNum/DataStructs/Matrix/LinAlg.h"
 
 namespace CNum::DataStructs::LinAlg {
-  // ---- Get single column unit vector ----
   void unit_vector(Matrix<double> &a) {
     if (a.get_cols() > 1) {
       throw ::std::invalid_argument("Unit vector error - Only supports 1 column");
     }
   
-    double magnitude = std::transform_reduce(std::execution::par_unseq,
-					     a.begin(),
-					     a.end(),
+    double magnitude = std::transform_reduce(a.begin(),
+  					     a.end(),
 					     0.0,
 					     std::plus<double>(),
 					     [] (double &val) {
@@ -17,13 +15,12 @@ namespace CNum::DataStructs::LinAlg {
 					     });
     magnitude = sqrt(magnitude);
 
-    std::for_each(std::execution::par_unseq, a.begin(), a.end(), [magnitude] (double &val) {
+    std::for_each(a.begin(), a.end(), [magnitude] (double &val) {
       val /= magnitude;
     });
   }
 
-  // ---- QR (Strang) Decomposition numerical method ----
-  std::array< ::CNum::DataStructs::Matrix<double>, 2 > qr_decomposition(const Matrix<double> &a) {
+  QR qr_decomposition(const Matrix<double> &a) {
     std::vector< Matrix<double> > q;
     std::array< Matrix<double>, 2 > qr;
     auto r_ptr = std::make_unique<double[]>(a.get_rows() * a.get_cols());
@@ -42,26 +39,49 @@ namespace CNum::DataStructs::LinAlg {
 
       r_ptr[i * a.get_cols() + i] = a_i.dot(q[i]);
     }
-
-    qr[0] = Matrix<double>::join_cols(q);
-    qr[1] = Matrix<double>(a.get_rows(), a.get_cols(), std::move(r_ptr));
   
-    return qr;
+    return { Matrix<double>::join_cols(q), Matrix<double>(a.get_rows(), a.get_cols(), std::move(r_ptr)) };
   }
 
-  // ---- Get Eigen Values and Eigen Vectors of matrix ----
+  
+  double frobenius_norm(const Matrix<double> &m, bool is_off_diagonal) {
+    double norm{ 0.0 };
+    size_t cols = m.get_cols();
+    size_t rows = m.get_rows();
+
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+	if (is_off_diagonal && i == j)
+	  continue;
+	
+	auto val = m.get(i, j);
+	norm += val * val;
+      }
+    }
+
+    return ::std::sqrt(norm);
+  }
+
   Eigen find_eigen_values(const Matrix<double> &a) {
+    constexpr double convergence_tol = 1e-10;
+    constexpr int max_iter = 1000;
+    
     auto qr = qr_decomposition(a);
-    auto eigen_vectors = Matrix<double>::identity(qr[0].get_rows());
-    auto b = qr[1] * qr[0];
+    auto eigen_vectors = Matrix<double>::identity(qr.q.get_rows());
+    auto b = qr.r * qr.q;
 
     size_t last_row = a.get_rows() - 1;
+    int iter{ 0 };
     
-    // *Update to check for convergence*
-    for (int i = 0; i < 50; i++) {
+    while (iter++ < max_iter) {
       qr = qr_decomposition(b);
-      b = qr[1] * qr[0];
-      eigen_vectors = eigen_vectors * qr[0];
+      b = qr.r * qr.q;
+      eigen_vectors = eigen_vectors * qr.q;
+
+      auto off_diag_norm = frobenius_norm(b, true);
+      auto norm = frobenius_norm(b);
+      if (off_diag_norm / norm < convergence_tol)
+	break;
     }
 
     size_t len = std::min(b.get_rows(), b.get_cols());
@@ -70,10 +90,10 @@ namespace CNum::DataStructs::LinAlg {
     for (int i = 0; i < len; i++) {
       eigen_values[i] = b.get(i, i);
     }
-    return { ::std::move(eigen_values), eigen_vectors };
+    
+    return { ::std::move(eigen_values), ::std::move(eigen_vectors) };
   }
 
-  // ---- Get covariance matrix ----
   Matrix<double> covariance(const Matrix<double> &a) {
     std::vector< Matrix<double> > cols;
   
