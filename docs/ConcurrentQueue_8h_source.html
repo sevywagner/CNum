@@ -103,8 +103,11 @@ $(function(){initNavTree('ConcurrentQueue_8h_source.html','',''); });
 <div class="foldopen" id="foldopen00008" data-start="{" data-end="}">
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespaceCNum_1_1DataStructs.html">    8</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceCNum_1_1DataStructs.html">CNum::DataStructs</a> {</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span></div>
-<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8">   19</a></span><span class="comment">   * ThreadPool class can easily be swapped with the lock-free version on my</span></div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8">   16</a></span><span class="comment">   * a lock-free approach. This is likely due to the way the pool is used in</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">   * the CNum ML models which is submitting many instances of smaller tasks. </span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">   * If you need a thread pool with a lock free queue this queue and the</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">   * ThreadPool class can easily be swapped with the lock-free version on my</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">   * GitHub</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">   */</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
@@ -117,23 +120,30 @@ $(function(){initNavTree('ConcurrentQueue_8h_source.html','',''); });
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">bool</span> _stop;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a4ecd5a66657dd2086e4e9607e3b781ba">   31</a></span><span class="comment">    /// @brief Default constructor</span></div>
 <div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a1beb5b69c8e315b2d1d402ef898642b5">   32</a></span>    <a class="code hl_function" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a1beb5b69c8e315b2d1d402ef898642b5">ConcurrentQueue</a>();</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae4d686ab826e16ec0cb3f3c0a7a4b53c">   33</a></span>    <a class="code hl_function" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae4d686ab826e16ec0cb3f3c0a7a4b53c">~ConcurrentQueue</a>() = <span class="keywordflow">default</span>;</div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a4ecd5a66657dd2086e4e9607e3b781ba">   34</a></span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span></div>
 <div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a3fbe70bc247e0f0caaf8eb4f049dc641">   37</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a3fbe70bc247e0f0caaf8eb4f049dc641">enqueue</a>(T val);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span></div>
-<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ab5e371970e4b50d258749848f21b5103">   39</a></span><span class="comment">    /// @brief dequeue a value</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">    /// @param val Reference to the variable to store the popped value in</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">    /// @return Whether or not the operation was successful</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8">   42</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8">dequeue</a>(T &amp;val);</div>
+</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span></div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae9d26adf53c272ee33837eef6b112541">   46</a></span><span class="comment">    /// This is used to set the stop flag which tells the thread pool</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">    /// not to enqueue any more tasks</span></div>
 <div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a4ecd5a66657dd2086e4e9607e3b781ba">   48</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a4ecd5a66657dd2086e4e9607e3b781ba">set_stop</a>();</div>
-<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae9d26adf53c272ee33837eef6b112541">   49</a></span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span></div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae9d26adf53c272ee33837eef6b112541">   52</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae9d26adf53c272ee33837eef6b112541">empty</a>();</div>
-</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span></div>
 <div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ab5e371970e4b50d258749848f21b5103">   56</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ab5e371970e4b50d258749848f21b5103">stop_is_set</a>();</div>
@@ -153,13 +163,14 @@ $(function(){initNavTree('ConcurrentQueue_8h_source.html','',''); });
 </div>
 </div>
 </div>
+</div>
 <div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_a1beb5b69c8e315b2d1d402ef898642b5"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a1beb5b69c8e315b2d1d402ef898642b5">CNum::DataStructs::ConcurrentQueue::ConcurrentQueue</a></div><div class="ttdeci">ConcurrentQueue()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:3</div></div>
 <div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_a3fbe70bc247e0f0caaf8eb4f049dc641"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a3fbe70bc247e0f0caaf8eb4f049dc641">CNum::DataStructs::ConcurrentQueue::enqueue</a></div><div class="ttdeci">void enqueue(T val)</div><div class="ttdoc">Enqueue a element.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:6</div></div>
-<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_a4ecd5a66657dd2086e4e9607e3b781ba"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a4ecd5a66657dd2086e4e9607e3b781ba">CNum::DataStructs::ConcurrentQueue::set_stop</a></div><div class="ttdeci">void set_stop()</div><div class="ttdoc">Set stop flag for thread pool.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:34</div></div>
-<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_a6023a83c42260474937c90fefbe777c8"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8">CNum::DataStructs::ConcurrentQueue::dequeue</a></div><div class="ttdeci">bool dequeue(T &amp;val)</div><div class="ttdoc">dequeue a value</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:19</div></div>
-<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_ab5e371970e4b50d258749848f21b5103"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ab5e371970e4b50d258749848f21b5103">CNum::DataStructs::ConcurrentQueue::stop_is_set</a></div><div class="ttdeci">bool stop_is_set()</div><div class="ttdoc">Check stop flag for thread pool.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:42</div></div>
+<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_a4ecd5a66657dd2086e4e9607e3b781ba"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a4ecd5a66657dd2086e4e9607e3b781ba">CNum::DataStructs::ConcurrentQueue::set_stop</a></div><div class="ttdeci">void set_stop()</div><div class="ttdoc">Set stop flag for thread pool.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:31</div></div>
+<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_a6023a83c42260474937c90fefbe777c8"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8">CNum::DataStructs::ConcurrentQueue::dequeue</a></div><div class="ttdeci">bool dequeue(T &amp;val)</div><div class="ttdoc">dequeue a value</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:16</div></div>
+<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_ab5e371970e4b50d258749848f21b5103"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ab5e371970e4b50d258749848f21b5103">CNum::DataStructs::ConcurrentQueue::stop_is_set</a></div><div class="ttdeci">bool stop_is_set()</div><div class="ttdoc">Check stop flag for thread pool.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:39</div></div>
 <div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_ae4d686ab826e16ec0cb3f3c0a7a4b53c"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae4d686ab826e16ec0cb3f3c0a7a4b53c">CNum::DataStructs::ConcurrentQueue::~ConcurrentQueue</a></div><div class="ttdeci">~ConcurrentQueue()=default</div></div>
-<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_ae9d26adf53c272ee33837eef6b112541"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae9d26adf53c272ee33837eef6b112541">CNum::DataStructs::ConcurrentQueue::empty</a></div><div class="ttdeci">bool empty()</div><div class="ttdoc">Check if the queue is empty.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:49</div></div>
+<div class="ttc" id="aclassCNum_1_1DataStructs_1_1ConcurrentQueue_html_ae9d26adf53c272ee33837eef6b112541"><div class="ttname"><a href="classCNum_1_1DataStructs_1_1ConcurrentQueue.html#ae9d26adf53c272ee33837eef6b112541">CNum::DataStructs::ConcurrentQueue::empty</a></div><div class="ttdeci">bool empty()</div><div class="ttdoc">Check if the queue is empty.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:46</div></div>
 <div class="ttc" id="anamespaceCNum_1_1DataStructs_html"><div class="ttname"><a href="namespaceCNum_1_1DataStructs.html">CNum::DataStructs</a></div><div class="ttdoc">The data structures used in CNum.</div><div class="ttdef"><b>Definition</b> ConcurrentQueue.h:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,86 +1,53 @@
 # CNum: A CPU-Optimized C++ ML Library
 
-> **Status:** Alpha. APIs and results may change. 
+> **Status:** Alpha. APIs and results may change. Test suite will be expanded in 0.3.0
 
 ## Highlights
-- High-level ML interfaces with low-level control
+- Makes writing ML code in C++ simple
 - Easy to use data structures (Matrix, Mask, Hazard Pointer, Arena, Concurrent Queue, and more)
 - Highly optimized Gradient Boosting Models
 - Cache-friendly custom arena allocator and per-worker memory reuse
-- Parallelized features using futures-based thread pool
-- Global random number generator service (backed by xoshiro256)
-- Optional REST API tools for inference (Crow based)
+- Parallelized features using futures-based thread pool and C++ execution policies
+- Designed for reproducible CPU performance
+- Effortless REST APIs for inference
+- No AI generated code used in the development of this library
 
 ## Immediate Plans
+- More extensive tests
 - Implement LightGBM
 - Implement autograd and tensor engine
 
-## Dependencies
-- <a href="https://github.com/nlohmann/json">nlohmann::json</a> - header-only, bundled
-- <a href="https://github.com/ipkn/crow">Crow</a> - header-only, bundled, used only for the Deploy namespace (has asio as a dependency)
-- <a href="https://think-async.com/Asio">asio</a> - only necessary if DEPLOY_TOOLS=ON
-- <a href="https://github.com/google/googletest">GoogleTest</a> - Needed if BUILD_TESTS=ON (install with INSTALL_GTEST=ON)
-
-## Supported Platforms
-- Linux (GCC/Clang)
-- MacOS (Clang)
-- Windows (MSVC + CMake)
+## Dependancies
+The CNum library relies on the <a href="https://github.com/nlohmann/json">nlohmann json package</a> for the encoding of trained models to json format. As it is a header-only library the header is included in include/json.hpp. The CNum library also uses the <a href="https://github.com/ipkn/crow">Crow C++ microframework</a> for REST API tools used for the effortless inference API feature of CNum. The Crow library is also header only, however, it depends on the asio networking package (boost and standalone both work). If you intend to use the Deploy namespace of CNum for creating REST APIs for inference, you must first install the asio package which can be done <a href="https://think-async.com/Asio">here</a>. If you don't want to use the REST API tools, however this is not required (see "Quick Start").
 
 ## Docs
 Docs for this library can be found <a href="https://sevywagner.github.io/CNum">here</a>
 
 ## Quick Start
-### Basic installation: 
+When building CNum you can choose whether or not to include the REST API tools in the package. This can be done by simply setting the CMake DEPLOY_TOOLS option to "ON". By default this is turned off
+
+### Build library
+Default: 
 ```bash
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
+
+# Use default settings (DEPLOY_TOOLS off)
+cmake ..
 sudo make install
 ```
-All build examples assume CMAKE_BUILD_TYPE=Release, which is currently the only build type supported by CNum
 
-### Using REST API tools:
-To use REST API tools (optional) set DEPLOY_TOOLS=ON (OFF by default). While crow is bundled, it depends on asio (standalone or boost) which can be installed <a href="https://think-async.com/Asio">here</a>.
+With REST API tools:
 ```bash
+mkdir build
+cd build
+
+# Use default settings (DEPLOY_TOOLS off)
 cmake -DDEPLOY_TOOLS=ON ..
-```
-In the event that CMake cannot locate the asio.hpp, file you must give it the path to the dir that contains asio.hpp by setting ASIO_HEADER_DIR.
-```bash
-cmake -DDEPLOY_TOOLS=ON -DASIO_HEADER_DIR=path/to/asio/include ..
+sudo make install
 ```
 
-To then use the deploy tools in your project, link the CNum_Deploy interface in your project's CMakeLists.txt:
-```cmake
-target_link_libraries(your_app PRIVATE CNum::CNum_Deploy)
-```
-
-Then include the Deploy interface in any source files using it:
-```cpp
-#include <CNum/Deploy.h>
-```
-
-The Deploy module is intentionally not included from CNum.h to keep it fully optional and to avoid imposing unnecessary Asio/Crow dependencies on users who do not need REST functionality.
-
-### Building tests:
-To build the test harness for CNum simply set BUILD_TESTS=ON (OFF by default).
-```bash
-cmake -DBUILD_TESTS=ON ..
-```
-
-If you do not have GoogleTest installed on your system you can set INSTALL_GTEST=ON (OFF by default) to install it
-```bash
-cmake -DBUILD_TESTS=ON -DINSTALL_GTEST=ON ..
-```
-
-Then to run the actual tests:
-```bash
-make
-./tests/test_harness
-```
-
-## Build a test model
-This example trains a Gradient Boosting regressor on a dummy dataset.
-
+### Build a test model
 main.cpp
 ```cpp
 #include <CNum.h>
@@ -132,6 +99,3 @@ cmake ..
 make
 ./main
 ```
-
-## License
-CNum is released under the MIT license

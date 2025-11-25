@@ -20,11 +20,9 @@ var hierarchy =
     [ "CNum::Model::ModelPool&lt; ModelType &gt;", "classCNum_1_1Model_1_1ModelPool.html", null ],
     [ "CNum::Deploy::PathString", "structCNum_1_1Deploy_1_1PathString.html", null ],
     [ "CNum::DataStructs::LinAlg::QR", "structCNum_1_1DataStructs_1_1LinAlg_1_1QR.html", null ],
-    [ "CNum::Utils::Rand::RandomGenerator", "classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html", null ],
     [ "CNum::DataStructs::HazardPointer::Retire", "structCNum_1_1DataStructs_1_1HazardPointer_1_1Retire.html", null ],
     [ "CNum::Data::Shelf", "structCNum_1_1Data_1_1Shelf.html", null ],
     [ "CNum::Model::Tree::Split", "structCNum_1_1Model_1_1Tree_1_1Split.html", null ],
-    [ "XoshiroCpp::SplitMix64", "classXoshiroCpp_1_1SplitMix64.html", null ],
     [ "CNum::DataStructs::Views::StrideIterator&lt; T &gt;", "classCNum_1_1DataStructs_1_1Views_1_1StrideIterator.html", null ],
     [ "CNum::DataStructs::Views::StrideView&lt; T &gt;", "classCNum_1_1DataStructs_1_1Views_1_1StrideView.html", null ],
     [ "CNum::Multithreading::ThreadPool", "classCNum_1_1Multithreading_1_1ThreadPool.html", null ],
@@ -32,14 +30,5 @@ var hierarchy =
     [ "CNum::Model::Tree::TreeBooster", "classCNum_1_1Model_1_1Tree_1_1TreeBooster.html", [
       [ "CNum::Model::Tree::XGTreeBooster", "classCNum_1_1Model_1_1Tree_1_1XGTreeBooster.html", null ]
     ] ],
-    [ "CNum::Model::Tree::TreeBoosterNode", "classCNum_1_1Model_1_1Tree_1_1TreeBoosterNode.html", null ],
-    [ "XoshiroCpp::Xoroshiro128Plus", "classXoshiroCpp_1_1Xoroshiro128Plus.html", null ],
-    [ "XoshiroCpp::Xoroshiro128PlusPlus", "classXoshiroCpp_1_1Xoroshiro128PlusPlus.html", null ],
-    [ "XoshiroCpp::Xoroshiro128StarStar", "classXoshiroCpp_1_1Xoroshiro128StarStar.html", null ],
-    [ "XoshiroCpp::Xoshiro128Plus", "classXoshiroCpp_1_1Xoshiro128Plus.html", null ],
-    [ "XoshiroCpp::Xoshiro128PlusPlus", "classXoshiroCpp_1_1Xoshiro128PlusPlus.html", null ],
-    [ "XoshiroCpp::Xoshiro128StarStar", "classXoshiroCpp_1_1Xoshiro128StarStar.html", null ],
-    [ "XoshiroCpp::Xoshiro256Plus", "classXoshiroCpp_1_1Xoshiro256Plus.html", null ],
-    [ "XoshiroCpp::Xoshiro256PlusPlus", "classXoshiroCpp_1_1Xoshiro256PlusPlus.html", null ],
-    [ "XoshiroCpp::Xoshiro256StarStar", "classXoshiroCpp_1_1Xoshiro256StarStar.html", null ]
+    [ "CNum::Model::Tree::TreeBoosterNode", "classCNum_1_1Model_1_1Tree_1_1TreeBoosterNode.html", null ]
 ];

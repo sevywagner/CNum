@@ -9,8 +9,6 @@
 #include <thread>
 #include <mutex>
 #include <future>
-#include <atomic>
-#include <atomic>
 
 /**
  * @namespace CNum::Multithreading
@@ -37,11 +35,13 @@ namespace CNum::Multithreading {
     int _num_threads;
     std::vector<std::thread> _threads;
     std::mutex _mtx;
-    ::std::atomic<bool> _is_shutdown;
 
     /// @brief The worker used for each thread in the pool
     /// @param The configuration of the ThreadPool
     void worker(ThreadPoolConfig config);
+
+    /// @brief Shut the ThreadPool down
+    void shutdown();
 
     /// @brief Overloaded constructor
     ThreadPool(ThreadPoolConfig config);
@@ -52,26 +52,18 @@ namespace CNum::Multithreading {
     /// @param config The configuration of the ThreadPool
     /// @return A raw pointer to the instance of the ThreadPool
     static ThreadPool *get_thread_pool(ThreadPoolConfig config = { default_arena_init_block_ct });
-
-    /// @brief Destructor
-    ~ThreadPool();
+    ~ThreadPool() = default;
   
     ThreadPool(const ThreadPool &other) = delete;
     ThreadPool &operator=(const ThreadPool &other) = delete;
     ThreadPool(ThreadPool &&other) = delete;
     ThreadPool &operator=(ThreadPool &&other) = delete;
 
-    /// @brief Shut the ThreadPool down
-    void shutdown();
-    
     /// @brief Submit a task to the ThreadPool
     /// @param f The task
     /// @return A future that will contain whatever the task returns
     template<typename T>
     std::future<T> submit(std::function< T(arena_t *arena) > f) {
-      if (_is_shutdown.load(::std::memory_order_acquire))
-	throw ::std::runtime_error("Thread pool submit error - Submit cannot be called after thread pool is shut down");
-      
       auto p = std::make_shared< std::promise<T> >();
       std::future<T> fut = p->get_future();
   

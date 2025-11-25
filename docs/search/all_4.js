@@ -8,12 +8,9 @@ var searchData=
   ['default_5farena_5finit_5fblock_5fct_5',['default_arena_init_block_ct',['../namespaceCNum_1_1Multithreading.html#ab71c6f3e785b05e9ccfe97d3aa67e545',1,'CNum::Multithreading']]],
   ['default_5fhazard_5fptr_5fdelete_6',['default_hazard_ptr_delete',['../namespaceCNum_1_1DataStructs_1_1HazardPointer.html#ab8f51562b93bd3382aab0ee045192487',1,'CNum::DataStructs::HazardPointer']]],
   ['default_5fsubsample_7',['default_subsample',['../namespaceCNum_1_1Model_1_1Tree.html#a9bde131c631374873499604f1f558fbd',1,'CNum::Model::Tree']]],
-  ['defaultseed_8',['DefaultSeed',['../namespaceXoshiroCpp.html#a1cf9b1ddaaa320a9c8176bf5ec90423f',1,'XoshiroCpp']]],
-  ['deleter_9',['deleter',['../structCNum_1_1DataStructs_1_1HazardPointer_1_1Retire.html#a8412eeb5496ad8a5da0008aaaa2cf030',1,'CNum::DataStructs::HazardPointer::Retire']]],
-  ['deploy_2eh_10',['Deploy.h',['../Deploy_8h.html',1,'']]],
-  ['dequeue_11',['dequeue',['../classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8',1,'CNum::DataStructs::ConcurrentQueue']]],
-  ['deserialize_12',['deserialize',['../classXoshiroCpp_1_1SplitMix64.html#a28ef9ce4c8963b9cf8a1b5bed83e64f9',1,'XoshiroCpp::SplitMix64::deserialize()'],['../classXoshiroCpp_1_1Xoshiro256Plus.html#a304e56caad7b485b3148acc670bdf19e',1,'XoshiroCpp::Xoshiro256Plus::deserialize()'],['../classXoshiroCpp_1_1Xoshiro256PlusPlus.html#a93d2f317c3486804474eb8fc92f49551',1,'XoshiroCpp::Xoshiro256PlusPlus::deserialize()'],['../classXoshiroCpp_1_1Xoshiro256StarStar.html#af5cc245749e2c8f0e4dc1ee3bd33e40e',1,'XoshiroCpp::Xoshiro256StarStar::deserialize()'],['../classXoshiroCpp_1_1Xoroshiro128Plus.html#a8243c53ba9135033660ebd84821ec119',1,'XoshiroCpp::Xoroshiro128Plus::deserialize()'],['../classXoshiroCpp_1_1Xoroshiro128PlusPlus.html#a4b400c45a0191d8f7f82d415b41b48c1',1,'XoshiroCpp::Xoroshiro128PlusPlus::deserialize()'],['../classXoshiroCpp_1_1Xoroshiro128StarStar.html#ac8bd335f7f9b257fadcbf53b5e795976',1,'XoshiroCpp::Xoroshiro128StarStar::deserialize()'],['../classXoshiroCpp_1_1Xoshiro128Plus.html#a3b083f173fc1fbdf16f6e0ae655a471b',1,'XoshiroCpp::Xoshiro128Plus::deserialize()'],['../classXoshiroCpp_1_1Xoshiro128PlusPlus.html#ab594bf48c7c1f2c62b97e137d297a3f8',1,'XoshiroCpp::Xoshiro128PlusPlus::deserialize()'],['../classXoshiroCpp_1_1Xoshiro128StarStar.html#a3c6e9b8064245c9d82756db32d801374',1,'XoshiroCpp::Xoshiro128StarStar::deserialize()']]],
-  ['dim_13',['Dim',['../namespaceCNum_1_1DataStructs.html#a2a6d24643bc0f9c6c2851d84d66d713e',1,'CNum::DataStructs']]],
-  ['dot_14',['dot',['../classCNum_1_1DataStructs_1_1Matrix.html#aa7850bf04ef1b8b27291dbfffe6067c6',1,'CNum::DataStructs::Matrix']]],
-  ['doublefrombits_15',['DoubleFromBits',['../namespaceXoshiroCpp.html#ab94970f525b19537b74dd405e3994708',1,'XoshiroCpp']]]
+  ['deleter_8',['deleter',['../structCNum_1_1DataStructs_1_1HazardPointer_1_1Retire.html#a8412eeb5496ad8a5da0008aaaa2cf030',1,'CNum::DataStructs::HazardPointer::Retire']]],
+  ['deploy_2eh_9',['Deploy.h',['../Deploy_8h.html',1,'']]],
+  ['dequeue_10',['dequeue',['../classCNum_1_1DataStructs_1_1ConcurrentQueue.html#a6023a83c42260474937c90fefbe777c8',1,'CNum::DataStructs::ConcurrentQueue']]],
+  ['dim_11',['Dim',['../namespaceCNum_1_1DataStructs.html#a2a6d24643bc0f9c6c2851d84d66d713e',1,'CNum::DataStructs']]],
+  ['dot_12',['dot',['../classCNum_1_1DataStructs_1_1Matrix.html#aa7850bf04ef1b8b27291dbfffe6067c6',1,'CNum::DataStructs::Matrix']]]
 ];

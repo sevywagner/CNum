@@ -1,7 +1,0 @@
-./include/CNum/Model/Tree/LGBMTreeBooster.h
-./src/Model/Tree/LGBMTreeBooster.cpp
-./Makefile
-build/
-data/
-documentation/
-./dox_warning.log

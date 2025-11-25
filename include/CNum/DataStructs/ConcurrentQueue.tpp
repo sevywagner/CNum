@@ -5,9 +5,6 @@ template <typename T>
 void ConcurrentQueue<T>::enqueue(T val) {
   ::std::unique_lock<std::mutex> ul(_mtx);
 
-  if (_stop)
-    return;
-  
   _q.push(val);
   ul.unlock();
   _cv.notify_one();

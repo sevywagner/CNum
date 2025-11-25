@@ -30,7 +30,7 @@ GBModel<TreeType>::GBModel(::std::string lt,
   _trees = new TreeType[n_learners];
   _loss_profile = CNum::Model::Loss::get_loss_profile(lt);
   if (!_activation.empty())
-    _activation_func = CNum::Model::Activation::get_activation_func(activation_func);
+  _activation_func = CNum::Model::Activation::get_activation_func(activation_func);
 }
 
 template <typename TreeType>
@@ -132,8 +132,7 @@ GBModel<TreeType>::~GBModel() {
 
 template <typename TreeType>
 void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
-			    CNum::DataStructs::Matrix<double> &y,
-			    bool verbose) {
+			    CNum::DataStructs::Matrix<double> &y) {
   auto *tp = CNum::Multithreading::ThreadPool::get_thread_pool();
 
   auto a = tp->submit< void >([&, this] (arena_t *arena) {
@@ -181,7 +180,7 @@ void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
 	  _trees[i].fit(data, shelves, g_sub_ptr, h_sub_ptr, partition);
 	  fm = fm + (_trees[i].predict(X) * _learning_rate);
       
-	  if (verbose && i % 5 == 0) {
+	  if (i % 5 == 0) {
 	    ::std::cout << "[*] Learner #" << i << " loss: "
 			<< _loss_profile.loss_func(y, fm) << ::std::endl;
 	  }

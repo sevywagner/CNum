@@ -6,7 +6,6 @@
 
 namespace CNum::Multithreading {
   ThreadPool::ThreadPool(ThreadPoolConfig config) {
-    _is_shutdown.store(false, ::std::memory_order_release);
     _num_threads = std::thread::hardware_concurrency() - 1;
     if (_num_threads < 1)
       _num_threads = 1;
@@ -22,14 +21,10 @@ namespace CNum::Multithreading {
     return thread_pool;
   }
 
-  ThreadPool::~ThreadPool() {
-    shutdown();
-  }
   
   void ThreadPool::shutdown() {
-    _is_shutdown.store(true, ::std::memory_order_release);
     _q.set_stop();
-    
+
     for (auto &t: _threads)
       t.join();
   }

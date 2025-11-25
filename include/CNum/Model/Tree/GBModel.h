@@ -181,8 +181,7 @@ namespace CNum::Model::Tree {
     /// @param X The tabular data used to train the GBModel
     /// @param y The labels for the data (the intended output of the model)
     void fit(::CNum::DataStructs::Matrix<double> &X,
-	     ::CNum::DataStructs::Matrix<double> &y,
-	     bool verbose = true);
+		     ::CNum::DataStructs::Matrix<double> &y);
 
     /// @brief Inference (making predictions)
     /// @param The data to make predictions on
