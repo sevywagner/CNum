@@ -7,10 +7,6 @@
 #include "CNum/Multithreading/Multithreading.h"
 #include "CNum/Model/Model.h"
 
-#ifdef DEPLOY_TOOLS
-#include "CNum/Deploy/Deploy.h"
-#endif
-
 /**
  * @namespace CNum
  * @brief The umbrella namespace from which you can access all modules of CNum

@@ -95,22 +95,49 @@ $(function(){initNavTree('RandUtils_8h_source.html','',''); });
 <a href="RandUtils_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef RAND_UTILS_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define RAND_UTILS_H</span></div>
 <div class="foldopen" id="foldopen00003" data-start="{" data-end="}">
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="namespaceCNum_1_1Utils_1_1Rand.html#a770c60875eecf84a2ee5ec310b04ee1a">    3</a></span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;random&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span></div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespaceCNum_1_1Utils_1_1Rand.html">   10</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceCNum_1_1Utils_1_1Rand.html">CNum::Utils::Rand</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceCNum_1_1Utils_1_1Rand.html#a770c60875eecf84a2ee5ec310b04ee1a">generate_n_unique_rand_in_range</a>(<span class="keywordtype">size_t</span> low_bound, <span class="keywordtype">size_t</span> high_bound, T *out, <span class="keywordtype">int</span> n);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">  #include &quot;CNum/Utils/RandUtils.tpp&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="namespaceCNum_1_1Utils_1_1Rand.html#a757aac363649f0a5a8f4bdc6000627fd">    3</a></span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="XoshiroCpp_8hpp.html">XoshiroCpp.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;random&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;shared_mutex&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;unordered_set&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span></div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespaceCNum_1_1Utils_1_1Rand.html">   14</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceCNum_1_1Utils_1_1Rand.html">CNum::Utils::Rand</a> {  </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceCNum_1_1Utils_1_1Rand.html#a757aac363649f0a5a8f4bdc6000627fd">generate_n_unique_rand_in_range</a>(<span class="keywordtype">size_t</span> low_bound, <span class="keywordtype">size_t</span> high_bound, T *out, <span class="keywordtype">size_t</span> n);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html">   27</a></span>  <span class="keyword">class </span>RandomGenerator {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">static</span> uint64_t _epoch;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">static</span> uint64_t _seed;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    static ::std::shared_mutex _seed_mtx;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    RandomGenerator() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#adfcf1b2aed1dd1885b0616eb4befb9d1">   38</a></span>    <span class="keyword">static</span> <a class="code hl_class" href="classXoshiroCpp_1_1Xoshiro256PlusPlus.html">XoshiroCpp::Xoshiro256PlusPlus</a> &amp;<a class="code hl_function" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#adfcf1b2aed1dd1885b0616eb4befb9d1">instance</a>();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#ae1b2674fdfd8372edb4757aa737b1a51">   42</a></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#ae1b2674fdfd8372edb4757aa737b1a51">set_global_seed</a>(uint64_t new_seed);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#a04c351dc89b38dfdf256cfa84dcd5fd7">   45</a></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#a04c351dc89b38dfdf256cfa84dcd5fd7">reset_state</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  };</div>
 </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#include &quot;CNum/Utils/RandUtils.tpp&quot;</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
 </div>
-<div class="ttc" id="anamespaceCNum_1_1Utils_1_1Rand_html"><div class="ttname"><a href="namespaceCNum_1_1Utils_1_1Rand.html">CNum::Utils::Rand</a></div><div class="ttdoc">Utilities for generating random numbers.</div><div class="ttdef"><b>Definition</b> RandUtils.h:10</div></div>
-<div class="ttc" id="anamespaceCNum_1_1Utils_1_1Rand_html_a770c60875eecf84a2ee5ec310b04ee1a"><div class="ttname"><a href="namespaceCNum_1_1Utils_1_1Rand.html#a770c60875eecf84a2ee5ec310b04ee1a">CNum::Utils::Rand::generate_n_unique_rand_in_range</a></div><div class="ttdeci">void generate_n_unique_rand_in_range(size_t low_bound, size_t high_bound, T *out, int n)</div><div class="ttdoc">Generate n unique random integers.</div><div class="ttdef"><b>Definition</b> RandUtils.h:3</div></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
+</div>
+<div class="ttc" id="aXoshiroCpp_8hpp_html"><div class="ttname"><a href="XoshiroCpp_8hpp.html">XoshiroCpp.hpp</a></div></div>
+<div class="ttc" id="aclassCNum_1_1Utils_1_1Rand_1_1RandomGenerator_html_a04c351dc89b38dfdf256cfa84dcd5fd7"><div class="ttname"><a href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#a04c351dc89b38dfdf256cfa84dcd5fd7">CNum::Utils::Rand::RandomGenerator::reset_state</a></div><div class="ttdeci">static void reset_state()</div><div class="ttdoc">Reconstruct all thread local random generators.</div></div>
+<div class="ttc" id="aclassCNum_1_1Utils_1_1Rand_1_1RandomGenerator_html_adfcf1b2aed1dd1885b0616eb4befb9d1"><div class="ttname"><a href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#adfcf1b2aed1dd1885b0616eb4befb9d1">CNum::Utils::Rand::RandomGenerator::instance</a></div><div class="ttdeci">static XoshiroCpp::Xoshiro256PlusPlus &amp; instance()</div><div class="ttdoc">Get the instance of the RandomGenerator.</div></div>
+<div class="ttc" id="aclassCNum_1_1Utils_1_1Rand_1_1RandomGenerator_html_ae1b2674fdfd8372edb4757aa737b1a51"><div class="ttname"><a href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#ae1b2674fdfd8372edb4757aa737b1a51">CNum::Utils::Rand::RandomGenerator::set_global_seed</a></div><div class="ttdeci">static void set_global_seed(uint64_t new_seed)</div><div class="ttdoc">Set the seed for random number generation.</div></div>
+<div class="ttc" id="aclassXoshiroCpp_1_1Xoshiro256PlusPlus_html"><div class="ttname"><a href="classXoshiroCpp_1_1Xoshiro256PlusPlus.html">XoshiroCpp::Xoshiro256PlusPlus</a></div><div class="ttdef"><b>Definition</b> XoshiroCpp.hpp:172</div></div>
+<div class="ttc" id="anamespaceCNum_1_1Utils_1_1Rand_html"><div class="ttname"><a href="namespaceCNum_1_1Utils_1_1Rand.html">CNum::Utils::Rand</a></div><div class="ttdoc">Utilities for generating random numbers.</div><div class="ttdef"><b>Definition</b> RandUtils.h:14</div></div>
+<div class="ttc" id="anamespaceCNum_1_1Utils_1_1Rand_html_a757aac363649f0a5a8f4bdc6000627fd"><div class="ttname"><a href="namespaceCNum_1_1Utils_1_1Rand.html#a757aac363649f0a5a8f4bdc6000627fd">CNum::Utils::Rand::generate_n_unique_rand_in_range</a></div><div class="ttdeci">void generate_n_unique_rand_in_range(size_t low_bound, size_t high_bound, T *out, size_t n)</div><div class="ttdoc">Generate n unique random integers.</div><div class="ttdef"><b>Definition</b> RandUtils.h:3</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

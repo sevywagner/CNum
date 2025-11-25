@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20...3.31)
 
 project(CNumLibrary
-	VERSION 0.2.0
+	VERSION 0.2.1
 	LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -11,8 +11,20 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 
-option(BUILD_TESTS "Build test harness" ON)
+option(BUILD_TESTS "Build test harness" OFF)
+option(INSTALL_GTEST "Install google test to run the test harness" OFF)
 option(DEPLOY_TOOLS "Include dependencies for the Deploy namespace (REST API tools)" OFF)
+
+if (NOT CMAKE_BUILD_TYPE)
+   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
+endif()
+
+set(allowed_build_types Release)
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${allowed_build_types})
+
+if (NOT CMAKE_BUILD_TYPE IN_LIST allowed_build_types)
+   message(FATAL_ERROR "Unsupported build type: ${CMAKE_BUILD_TYPE}")
+endif()
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
