@@ -92,11 +92,21 @@ $(function(){initNavTree('RandUtils_8h.html','',''); });
   <div class="headertitle"><div class="title">RandUtils.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;random&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="XoshiroCpp_8hpp_source.html">XoshiroCpp.hpp</a>&quot;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;random&gt;</code><br />
+<code>#include &lt;shared_mutex&gt;</code><br />
+<code>#include &lt;unordered_set&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &quot;CNum/Utils/RandUtils.tpp&quot;</code><br />
 </div>
 <p><a href="RandUtils_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:CNum_3A_3AUtils_3A_3ARand_3A_3ARandomGenerator" id="r_CNum_3A_3AUtils_3A_3ARand_3A_3ARandomGenerator"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html">CNum::Utils::Rand::RandomGenerator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A global service for random number generation.  <a href="classCNum_1_1Utils_1_1Rand_1_1RandomGenerator.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:CNum" id="r_CNum"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCNum.html">CNum</a></td></tr>
@@ -108,9 +118,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a770c60875eecf84a2ee5ec310b04ee1a" id="r_a770c60875eecf84a2ee5ec310b04ee1a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a770c60875eecf84a2ee5ec310b04ee1a template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCNum_1_1Utils_1_1Rand.html#a770c60875eecf84a2ee5ec310b04ee1a">CNum::Utils::Rand::generate_n_unique_rand_in_range</a> (size_t low_bound, size_t high_bound, T *out, int n)</td></tr>
-<tr class="memdesc:a770c60875eecf84a2ee5ec310b04ee1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate n unique random integers.  <br /></td></tr>
+<tr class="memitem:a757aac363649f0a5a8f4bdc6000627fd" id="r_a757aac363649f0a5a8f4bdc6000627fd"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a757aac363649f0a5a8f4bdc6000627fd template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCNum_1_1Utils_1_1Rand.html#a757aac363649f0a5a8f4bdc6000627fd">CNum::Utils::Rand::generate_n_unique_rand_in_range</a> (size_t low_bound, size_t high_bound, T *out, size_t n)</td></tr>
+<tr class="memdesc:a757aac363649f0a5a8f4bdc6000627fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate n unique random integers.  <br /></td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

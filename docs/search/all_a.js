@@ -1,5 +1,6 @@
 var searchData=
 [
   ['join_5fcols_0',['join_cols',['../classCNum_1_1DataStructs_1_1Matrix.html#af4abeb78cc900d5f1d58f51a73867675',1,'CNum::DataStructs::Matrix']]],
-  ['json_1',['json',['../namespaceCNum_1_1Model_1_1Tree.html#a0558fac6b3732efc744a034e37af8c2d',1,'CNum::Model::Tree']]]
+  ['json_1',['json',['../namespaceCNum_1_1Model_1_1Tree.html#a0558fac6b3732efc744a034e37af8c2d',1,'CNum::Model::Tree']]],
+  ['jump_2',['jump',['../classXoshiroCpp_1_1Xoshiro256Plus.html#a8d8dc02f1b8a398c78d4e012948711a6',1,'XoshiroCpp::Xoshiro256Plus::jump()'],['../classXoshiroCpp_1_1Xoshiro256PlusPlus.html#af748499f81f0e0ec49607310581b348b',1,'XoshiroCpp::Xoshiro256PlusPlus::jump()'],['../classXoshiroCpp_1_1Xoshiro256StarStar.html#ac5ab38978ad39e854d49337ca4a74758',1,'XoshiroCpp::Xoshiro256StarStar::jump()'],['../classXoshiroCpp_1_1Xoroshiro128Plus.html#ae64c53a1678d4f169ac260f0a5f2be56',1,'XoshiroCpp::Xoroshiro128Plus::jump()'],['../classXoshiroCpp_1_1Xoroshiro128PlusPlus.html#a878473ae91df22d1fcbb5c2f0bdec14f',1,'XoshiroCpp::Xoroshiro128PlusPlus::jump()'],['../classXoshiroCpp_1_1Xoroshiro128StarStar.html#a8ddeb442e7b433464d3166779954bd9e',1,'XoshiroCpp::Xoroshiro128StarStar::jump()'],['../classXoshiroCpp_1_1Xoshiro128Plus.html#ae750ff935c8e409e632f895a0d7a5545',1,'XoshiroCpp::Xoshiro128Plus::jump()'],['../classXoshiroCpp_1_1Xoshiro128PlusPlus.html#a25dd5157e3908ebad8ec5f5f9a10b8c8',1,'XoshiroCpp::Xoshiro128PlusPlus::jump()'],['../classXoshiroCpp_1_1Xoshiro128StarStar.html#a0bfd009562b955b12e9a889333ecaf0b',1,'XoshiroCpp::Xoshiro128StarStar::jump()']]]
 ];

@@ -1,0 +1,49 @@
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/Matrix.h:23: warning: Documentation for undefined enum 'dim' found.
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.tpp:7: warning: no matching class member found for 
+  template < TreeType >
+  CNum::Model::Tree::GBModel< TreeType >::GBModel(::std::string lt, int n_learners, double lr, double ss, int md, int ms, SplitAlg sa, ::std::string activation_func, double weight_decay, double rl, double gamma, SubsampleFunction ssf)
+Possible candidates:
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(std::string lt="MSE", int n_learners=200, double lr=0.1, double ss=0.25, int md=5, int ms=3, SplitAlg sa=HIST, ::std::string activation_func="", double weight_decay=0.0, double rl=1.0, double gamma=0.0, SubsampleFunction ssf=default_subsample)' at line 114 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(::CNum::Model::Loss::LossProfile loss_profile, int n_learners, double lr, double ss, int md, int ms, SplitAlg sa, ::CNum::Model::Activation::ActivationFunc activation_func, double weight_decay, double rl, double gamma, SubsampleFunction ssf=default_subsample)' at line 151 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(const GBModel &other) noexcept' at line 166 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(GBModel &&other) noexcept' at line 172 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.tpp:38: warning: no matching class member found for 
+  template < TreeType >
+  CNum::Model::Tree::GBModel< TreeType >::GBModel(CNum::Model::Loss::LossProfile loss_profile, int n_learners, double lr, double ss, int md, int ms, SplitAlg sa, CNum::Model::Activation::ActivationFunc activation_func, double weight_decay, double rl, double gamma, SubsampleFunction ssf)
+Possible candidates:
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(std::string lt="MSE", int n_learners=200, double lr=0.1, double ss=0.25, int md=5, int ms=3, SplitAlg sa=HIST, ::std::string activation_func="", double weight_decay=0.0, double rl=1.0, double gamma=0.0, SubsampleFunction ssf=default_subsample)' at line 114 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(::CNum::Model::Loss::LossProfile loss_profile, int n_learners, double lr, double ss, int md, int ms, SplitAlg sa, ::CNum::Model::Activation::ActivationFunc activation_func, double weight_decay, double rl, double gamma, SubsampleFunction ssf=default_subsample)' at line 151 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(const GBModel &other) noexcept' at line 166 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+  'CNum::Model::Tree::GBModel< TreeType >::GBModel(GBModel &&other) noexcept' at line 172 of file /home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/Matrix.h:248: warning: argument 'The' of command @param is not found in the argument list of CNum::DataStructs::Matrix< T >::combine_vertically(::std::vector< Matrix< T > > &matrices, size_t total_rows)
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/Matrix.h:248: warning: The following parameters of CNum::DataStructs::Matrix::combine_vertically(::std::vector< Matrix< T > > &matrices, size_t total_rows) are not documented:
+  parameter 'matrices'
+  parameter 'total_rows'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/Matrix.h:232: warning: The following parameter of CNum::DataStructs::Matrix::init_const(size_t rows, size_t cols, T val) is not documented:
+  parameter 'val'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/Matrix.h:178: warning: argument 'm' of command @param is not found in the argument list of CNum::DataStructs::Matrix< T >::operator[](const BinaryMask &bin_mask) const
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/Matrix.h:178: warning: The following parameter of CNum::DataStructs::Matrix::operator[](const BinaryMask &bin_mask) const is not documented:
+  parameter 'bin_mask'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/BinaryMask.h:41: warning: The following parameter of CNum::DataStructs::BinaryMask::BinaryMask(BitMask mask, size_t size, size_t n_set) is not documented:
+  parameter 'n_set'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/DataStructs/Matrix/LinAlg.h:39: warning: found documented return type for CNum::DataStructs::LinAlg::unit_vector that does not return anything
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h:181: warning: The following parameter of CNum::Model::Tree::GBModel::fit(::CNum::DataStructs::Matrix< double > &X, ::CNum::DataStructs::Matrix< double > &y, bool verbose=true) is not documented:
+  parameter 'verbose'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h:188: warning: argument 'The' of command @param is not found in the argument list of CNum::Model::Tree::GBModel< TreeType >::predict(::CNum::DataStructs::Matrix< double > &data)
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/GBModel.h:188: warning: The following parameter of CNum::Model::Tree::GBModel::predict(::CNum::DataStructs::Matrix< double > &data) is not documented:
+  parameter 'data'
+error: Problems running epstopdf. Check your TeX installation!
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/TreeBooster.h:83: warning: The following parameters of CNum::Model::Tree::TreeBooster::TreeBooster(arena_t *a=nullptr, int md=5, int ms=3, double weight_decay=0.0, double reg_lambda=1.0, double gamma=0.0) are not documented:
+  parameter 'md'
+  parameter 'ms'
+  parameter 'weight_decay'
+  parameter 'reg_lambda'
+  parameter 'gamma'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Model/Tree/XGTreeBooster.h:70: warning: The following parameters of CNum::Model::Tree::XGTreeBooster::XGTreeBooster(arena_t *a=nullptr, int md=5, int ms=3, double weight_decay=0.0, double reg_lambda=1.0, double gamma=0.0) are not documented:
+  parameter 'a'
+  parameter 'weight_decay'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Utils/ModelUtils.h:9: warning: Found unknown command '@namesapce'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Utils/RandUtils.h:12: warning: Found unknown command '@namesapace'
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Utils/RandUtils.h:42: warning: argument 'seed' of command @param is not found in the argument list of CNum::Utils::Rand::RandomGenerator::set_global_seed(uint64_t new_seed)
+/home/sevywagner/Desktop/coding/libraries/cnum/include/CNum/Utils/RandUtils.h:42: warning: The following parameter of CNum::Utils::Rand::RandomGenerator::set_global_seed(uint64_t new_seed) is not documented:
+  parameter 'new_seed'
