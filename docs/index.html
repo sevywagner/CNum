@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CNum: Main Page</title>
+<title>CNum: Intro to CNum</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">CNum<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">CNum<span id="projectnumber">&#160;0.2.1</span>
    </div>
    <div id="projectbrief">CPU-optimized ML library for C++</div>
   </td>
@@ -88,10 +88,14 @@ $(function(){initNavTree('index.html','',''); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">CNum Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Intro to <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><h1 class="doxsection"><a class="anchor" id="About"></a>
+About</h1>
+<p><a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> is a CPU-optimized machine learning library for C++ that provides user-friendly ML model interfaces for training and inference, while exposing more low-level features that allow for control over thread management and memory allocation. <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> currently offers a Gradient Boosting model abstraction which can be trained with any type of tree booster to solve regression and classification problems. Currently the only type of tree booster the <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> library offers is an XGBoost-style tree booster. <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> also offers an extension for creating REST APIs for inference. The design principles behind the creation of <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> were maintaining numerical stability and model accuracy while optimizing for efficiency and cache-friendliness. These principles are demonstrated in <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a>'s use of deterministic random number generators and algorithms such as Kahan's summation algorithm which aid in numerical stability and reproducibility. They are also demonstrated in the use of row-wise features, and thread-local arena allocators for cache-friendliness. <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> is currently still in the early stages of development, but in the future will also contain deep learning tools like an autograd and tensor engine, neurons, and layers. </p>
+</div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->

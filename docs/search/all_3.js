@@ -3,7 +3,7 @@ var searchData=
   ['capacity_0',['capacity',['../structarena.html#a4c3d3d04f030231393dcc58756192403',1,'arena']]],
   ['clear_5fall_5fslots_1',['clear_all_slots',['../classCNum_1_1DataStructs_1_1HazardPointer_1_1HazardPtrGuard.html#a951f384f22e76366bc4f0b256ab36fcf',1,'CNum::DataStructs::HazardPointer::HazardPtrGuard']]],
   ['clear_5fslot_2',['clear_slot',['../classCNum_1_1DataStructs_1_1HazardPointer_1_1HazardPtrGuard.html#a6b1fc5af90fc35c42555273a612641a9',1,'CNum::DataStructs::HazardPointer::HazardPtrGuard']]],
-  ['cnum_3',['CNum',['../namespaceCNum.html',1,'']]],
+  ['cnum_3',['CNum',['../namespaceCNum.html',1,'CNum'],['../index.html',1,'Intro to CNum']]],
   ['cnum_2eh_4',['CNum.h',['../CNum_8h.html',1,'']]],
   ['cnum_3a_3adata_5',['Data',['../namespaceCNum_1_1Data.html',1,'CNum']]],
   ['cnum_3a_3adatastructs_6',['DataStructs',['../namespaceCNum_1_1DataStructs.html',1,'CNum']]],

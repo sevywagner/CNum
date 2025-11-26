@@ -17,6 +17,7 @@
 
 ## Dependencies
 - <a href="https://github.com/nlohmann/json">nlohmann::json</a> - header-only, bundled
+- <a href="https://github.com/Reputeless/Xoshiro-cpp">XoshiroCpp</a> - header-only, bundled
 - <a href="https://github.com/ipkn/crow">Crow</a> - header-only, bundled, used only for the Deploy namespace (has asio as a dependency)
 - <a href="https://think-async.com/Asio">asio</a> - only necessary if DEPLOY_TOOLS=ON
 - <a href="https://github.com/google/googletest">GoogleTest</a> - Needed if BUILD_TESTS=ON (install with INSTALL_GTEST=ON)
