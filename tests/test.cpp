@@ -118,16 +118,16 @@ TEST(BinaryMask, AllPositiveTest) {
 
 TEST(IndexMask, ArgsortTest) {
   auto ptr2 = ::std::make_unique<double[]>(mask_suite_len);
-  ptr2[0] = 5.0;
-  ptr2[1] = 4.5;
-  ptr2[2] = 4.3;
-  ptr2[3] = 4.1;
-  ptr2[4] = 3.7;
-  ptr2[5] = 3.1;
-  ptr2[6] = 2.5;
-  ptr2[7] = 1.9;
-  ptr2[8] = 1.6;
-  ptr2[9] = 1.1;
+  ptr2[9] = 5.0;
+  ptr2[8] = 4.5;
+  ptr2[7] = 4.3;
+  ptr2[6] = 4.1;
+  ptr2[5] = 3.7;
+  ptr2[4] = 3.1;
+  ptr2[3] = 2.5;
+  ptr2[2] = 1.9;
+  ptr2[1] = 1.6;
+  ptr2[0] = 1.1;
 
   auto mask = mask_suite_1d.argsort();
   auto m2 = mask_suite_1d[mask];

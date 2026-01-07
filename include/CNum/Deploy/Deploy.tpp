@@ -19,19 +19,30 @@ InferenceAPI<ModelType, Storage>::InferenceAPI(::std::string path,
 
     crow::json::wvalue res_body;
     Storage s;
+
+    CNum::DataStructs::Matrix<double> inference_data;
     
-    auto inference_data = _preprocess(::std::ref(req_body), ::std::ref(res_body), ::std::ref(s));
+     try {
+      inference_data = _preprocess(req_body, res_body, s);
+    } catch (...) {
+      crow::response res(500, "Error occurred in preprocessing function. ");
+      return res;
+    }
     
     auto *model = _models.pull();
     if (!model) {
-      return crow::response(500);
+      return crow::response(500, "Model Pool Error");
     }
-    _models.push(model);
     
     auto preds = model->predict(inference_data);
     _models.push(model);
 
-    _postprocess(::std::ref(preds), ::std::ref(res_body), ::std::ref(s));
+    try {
+      _postprocess(preds, res_body, s);
+    } catch (...) {
+      crow::response res(500, "Error occurred in postprocessing function. ");
+      return res;
+    }
 
     crow::response res(201);
     res.body = res_body.dump();
@@ -47,8 +58,23 @@ template <PathString Path> constexpr void InferenceAPI<ModelType, Storage>::add_
   _app.route<crow::black_magic::get_parameter_tag(p)>(Path.str).methods(method)([this, &route] (const crow::request &req,
 												crow::response &res) {
     auto *model = _models.pull();
-    route(req, res, model);
+    if (!model) {
+      res = crow::response(500, "Model Pool Error");
+      res.end();
+      return;
+    }
+
+    res = crow::response(200, "Successfully performed task");
+    try {
+      route(req, res, model);
+    } catch (::std::runtime_error e) {
+      res = crow::response(500, e.what());
+    } catch (...) {
+      res = crow::response(500, "Internal Server Error");
+    }
+    
     _models.push(model);
+    res.end();
   });
 }
 

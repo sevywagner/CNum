@@ -63,7 +63,7 @@ namespace CNum::Model::Tree {
   
   void TreeBooster::copy(const TreeBooster &other) noexcept {
     if (this == &other) return;
-    this->copy_hyperparams(::std::cref(other));
+    this->copy_hyperparams(other);
  
     if (this->_root != nullptr)
       destruct(_root);
@@ -74,7 +74,7 @@ namespace CNum::Model::Tree {
 
   
   TreeBooster::TreeBooster(const TreeBooster &other) noexcept {
-    this->copy(::std::cref(other));
+    this->copy(other);
   }
   
   
@@ -127,7 +127,7 @@ namespace CNum::Model::Tree {
 
     for (int i = 0; i < n_samples; i++) {
       auto sample = data.get_row_view(i);
-      pred_ptr[i] = predict_sample(_root, ::std::ref(sample));
+      pred_ptr[i] = predict_sample(_root, sample);
     }
   
     return Matrix<double>(data.get_rows(), 1, ::std::move(pred_ptr));
@@ -142,9 +142,9 @@ namespace CNum::Model::Tree {
       return node->_value;
 
     if (sample[node->_split.feature] <= node->_split.threshold)
-      return predict_sample(node->_left, ::std::ref(sample));
+      return predict_sample(node->_left, sample);
     else if (sample[node->_split.feature] > node->_split.threshold)
-      return predict_sample(node->_right, ::std::ref(sample));
+      return predict_sample(node->_right, sample);
 
     return node->_value;
   }

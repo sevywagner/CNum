@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 /**
- * @namesapace CNum::Utils::Rand
+ * @namespace CNum::Utils::Rand
  * @brief Utilities for generating random numbers
  */
 namespace CNum::Utils::Rand {  

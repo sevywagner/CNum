@@ -26,12 +26,12 @@ void Matrix<T>::copy(const Matrix &other) noexcept {
 
 template <typename T>
 Matrix<T>::Matrix(const Matrix &other) noexcept {
-  this->copy(::std::cref(other));
+  this->copy(other);
 }
 
 template <typename T>
 Matrix<T> &Matrix<T>::operator=(const Matrix &other) noexcept {
-  this->copy(::std::cref(other));
+  this->copy(other);
   return *this;
 }
 
@@ -404,9 +404,9 @@ Matrix<T> Matrix<T>::operator[](const IndexMask &idx_mask) const noexcept {
 template <typename T>
 IndexMask Matrix<T>::argsort(bool descending) const {
   if (descending)
-    return IndexMask::argsort< Matrix<T>, T, ::std::less<T> >(*this);
+    return IndexMask::argsort< Matrix<T>, T, ::std::greater<T> >(*this);
 
-  return IndexMask::argsort< Matrix<T>, T, ::std::greater<T> >(*this);
+  return IndexMask::argsort< Matrix<T>, T, ::std::less<T> >(*this);
 }
 
 // -------------------

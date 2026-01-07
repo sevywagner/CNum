@@ -43,10 +43,10 @@ namespace CNum::Model::Tree {
     arena_view_t large_hist_view = parent_hist_view;
 
     // partition data based on split
-    size_t mid_point = TreeBooster::partition_data(::std::cref(X), g, h,
+    size_t mid_point = TreeBooster::partition_data(X, g, h,
 						  node->_split.feature,
 						  node->_split.bin,
-						  ::std::cref(partition));
+						  partition);
 
     if (mid_point == partition.start || mid_point == partition.end) { // if the left or right side has 0 samples
       return;
@@ -72,7 +72,7 @@ namespace CNum::Model::Tree {
 
     enum split_dir small_side = left_pos_ct <= right_pos_ct ? LEFT : RIGHT;
     
-    auto split_small = TreeBoosterNode::find_best_split_hist(::std::cref(X), shelves, g, h,
+    auto split_small = TreeBoosterNode::find_best_split_hist(X, shelves, g, h,
 							     false,
 							     small_hist_view,
 							     small_side == LEFT ? left_partition : right_partition,
@@ -81,11 +81,11 @@ namespace CNum::Model::Tree {
 							     TreeBooster::_gamma);
 
     // histogram caching
-    TreeBooster::histogram_subtraction(::std::cref(parent_hist_view),
-				       ::std::ref(small_hist_view),
-				       ::std::ref(large_hist_view));
+    TreeBooster::histogram_subtraction(parent_hist_view,
+				       small_hist_view,
+				       large_hist_view);
 
-    auto split_large = TreeBoosterNode::find_best_split_hist(::std::cref(X), shelves, g, h,
+    auto split_large = TreeBoosterNode::find_best_split_hist(X, shelves, g, h,
 							     true,
 							     large_hist_view,
 							     small_side == RIGHT ? left_partition : right_partition,
@@ -123,7 +123,7 @@ namespace CNum::Model::Tree {
 			       double *g,
 			       double *h,
 			       DataPartition &partition) {
-    fit_node_greedy(::std::ref(X), g, h, _root);
+    fit_node_greedy(X, g, h, _root);
   }
 
   void XGTreeBooster::fit_prep(const Matrix<int> &X,
@@ -133,13 +133,13 @@ namespace CNum::Model::Tree {
 			       DataPartition &partition) {
     arena_view_t hist_view = TreeBooster::init_hist_view(X.get_rows());
     
-    auto split = TreeBoosterNode::find_best_split_hist(::std::cref(X),
+    auto split = TreeBoosterNode::find_best_split_hist(X,
 						       shelves,
 						       g,
 						       h,
 						       false,
 						       hist_view,
-						       ::std::ref(partition),
+						       partition,
 						       TreeBooster::_weight_decay,
 						       TreeBooster::_reg_lambda,
 						       TreeBooster::_gamma);
@@ -150,11 +150,11 @@ namespace CNum::Model::Tree {
     _root->_split = split;
     _root->_value = -gs / (hs + TreeBooster::_reg_lambda);
     
-    fit_node_hist(::std::cref(X),
+    fit_node_hist(X,
 		  shelves,
 		  g,
 		  h,
-		  ::std::ref(partition),
+		  partition,
 		  hist_view,
 		  _root);
     
@@ -167,7 +167,7 @@ namespace CNum::Model::Tree {
 			  DataPartition &partition) {
     ::std::visit([&, this] (auto &x) {
       _root = new TreeBoosterNode();
-      fit_prep(::std::cref(x), shelves, g, h, ::std::ref(partition));
+      fit_prep(x, shelves, g, h, partition);
     }, X);
   }
 };

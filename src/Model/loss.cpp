@@ -108,7 +108,7 @@ namespace CNum::Model::Loss {
       throw ::std::invalid_argument("Loss error - Only 1 dimensional matrices supported");
     }
   
-    return loss_func(::std::cref(y), ::std::cref(y_pred));
+    return loss_func(y, y_pred);
   }
 
   LossProfile get_loss_profile(::std::string loss) {

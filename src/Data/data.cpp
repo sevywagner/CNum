@@ -96,7 +96,7 @@ namespace CNum::Data {
 
   
   std::shared_ptr<Shelf[]> quantile_bin(const Matrix<double> &data, size_t num_bins) {
-    auto shelves = uniform_bin(std::cref(data), num_bins);
+    auto shelves = uniform_bin(data, num_bins);
     std::shared_ptr<Shelf[]> new_shelves(new Shelf[data.get_cols()]);
 
     for (int i = 0; i < data.get_cols(); i++) {

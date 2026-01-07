@@ -9,7 +9,6 @@ namespace CNum::Utils::Rand {
     static ::std::random_device rd;
     thread_local XoshiroCpp::Xoshiro256PlusPlus rng(rd());
     thread_local uint64_t last_epoch{ 0 };
-
     ::std::shared_lock sl(_seed_mtx);
     if (last_epoch != _epoch) {
       rng = XoshiroCpp::Xoshiro256PlusPlus(_seed);

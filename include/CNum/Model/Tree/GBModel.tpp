@@ -31,6 +31,8 @@ GBModel<TreeType>::GBModel(::std::string lt,
   _loss_profile = CNum::Model::Loss::get_loss_profile(lt);
   if (!_activation.empty())
     _activation_func = CNum::Model::Activation::get_activation_func(activation_func);
+  else
+    _activation_func = nullptr;
 }
 
 template <typename TreeType>
@@ -77,12 +79,13 @@ void GBModel<TreeType>::copy_hyperparams(const GBModel &other) noexcept {
   this->_activation = other._activation;
   this->_reg_lambda = other._reg_lambda;
   this->_gamma = other._gamma;
+  this->_activation_func = other._activation_func;
 }
 
 template <typename TreeType>
 void GBModel<TreeType>::copy(const GBModel &other) noexcept {
   if (this == &other) return;
-  this->copy_hyperparams(::std::cref(other));
+  this->copy_hyperparams(other);
 
   if (this->_trees != nullptr)
     delete[] this->_trees;
@@ -94,19 +97,19 @@ void GBModel<TreeType>::copy(const GBModel &other) noexcept {
 template <typename TreeType>
 void GBModel<TreeType>::move(GBModel &&other) noexcept {
   if (this == &other) return;
-  this->copy_hyperparams(::std::cref(other));
+  this->copy_hyperparams(other);
 
   this->_trees = ::std::exchange(other._trees, nullptr);
 }
 
 template <typename TreeType>
 GBModel<TreeType>::GBModel(const GBModel &other) noexcept {
-  this->copy(::std::cref(other));
+  this->copy(other);
 }
 
 template <typename TreeType>
 GBModel<TreeType> &GBModel<TreeType>::operator=(const GBModel &other) noexcept {
-  this->copy(::std::cref(other));
+  this->copy(other);
   return *this;
 }
 
@@ -137,9 +140,9 @@ void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
   auto *tp = CNum::Multithreading::ThreadPool::get_thread_pool();
 
   auto a = tp->submit< void >([&, this] (arena_t *arena) {
-    ::std::shared_ptr<CNum::Data::Shelf[]> shelves = _sa == GREEDY ? nullptr : CNum::Data::quantile_bin(::std::cref(X), N_BINS);
+    ::std::shared_ptr<CNum::Data::Shelf[]> shelves = _sa == GREEDY ? nullptr : CNum::Data::quantile_bin(X, N_BINS);
 
-      DataMatrix data = apply_quantile(::std::cref(X), shelves).transpose();
+      DataMatrix data = apply_quantile(X, shelves).transpose();
 
       CNum::DataStructs::Matrix<double> fm = CNum::DataStructs::Matrix<double>::init_const(y.get_rows(), 1, 0);
 
@@ -157,7 +160,7 @@ void GBModel<TreeType>::fit(CNum::DataStructs::Matrix<double> &X,
 	  double *g_sub_ptr = (double *) g_sub.ptr;
 	  double *h_sub_ptr = (double *) h_sub.ptr;
 
-	  _subsample_function(pos_ptr, 0, X.get_rows(), n_samples, ::std::cref(y));
+	  _subsample_function(pos_ptr, 0, X.get_rows(), n_samples, y);
      
 	  DataPartition partition{ &position_array, 0, n_samples };
 
