@@ -7,7 +7,8 @@ namespace CNum::Utils::ModelUtils {
   ::std::unique_ptr< Matrix<double>[] > train_test_split(const Matrix<double> &X,
 							 const Matrix<double> &y,
 							 double test_percentage,
-							 bool shuffle) {
+							 bool shuffle,
+							 uint64_t logical_id) {
     auto res = ::std::make_unique< Matrix<double>[] >(4);
   
     Matrix<double> x_use;
@@ -19,7 +20,8 @@ namespace CNum::Utils::ModelUtils {
       auto mask = std::make_unique<size_t[]>(X.get_rows());
 
       std::iota(mask.get(), mask.get() + X.get_rows(), 0);
-      std::shuffle(mask.get(), mask.get() + X.get_rows(), std::mt19937{std::random_device{}()});
+      auto &rng = ::CNum::Utils::Rand::RandomGenerator::instance(logical_id);
+      std::shuffle(mask.get(), mask.get() + X.get_rows(), rng);
 
       IndexMask m(std::move(mask), X.get_rows());
     

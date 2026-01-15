@@ -114,8 +114,8 @@ Matrix<T> Matrix<T>::operator*(T scale_factor) const noexcept {
 
 template <typename T>
 T Matrix<T>::dot(const Matrix<T> &other) const {
-  if (this->_rows != other._rows || this->_cols > 1 || other._cols) {
-    throw ::std::invalid_argument("Vector dot product error -- Dims misaligned");
+  if (this->_rows != other._rows || this->_cols != 1) {
+    throw ::std::invalid_argument("Vector dot product error -- Dims misaligned this function is for matrices of shape (n, 1)");
   }
 
   T sum{0};
@@ -131,9 +131,17 @@ template <typename T>
 void Matrix<T>::par_execute(uint8_t n_threads,
 			    size_t total_el,
 			    ::std::function< void(size_t) > callback) {
+  if (n_threads == 0)
+    throw ::std::invalid_argument("Par-execute error -- n_threads cannot be 0");
+
+  if (total_el < n_threads)
+    n_threads = static_cast<uint8_t>(total_el);
+  
+  if (total_el > ::std::numeric_limits<size_t>::max() - (n_threads - 1))
+    throw ::std::overflow_error("Overflow error in par-execute -- total_el + n_threads - 1 > SIZE_MAX");
   
   ::std::vector< ::std::future<void> > workers;
-  size_t el_per_thread = total_el / n_threads;
+  size_t el_per_thread = (total_el + n_threads - 1) / n_threads;
 
   auto *tp = CNum::Multithreading::ThreadPool::get_thread_pool();
 
@@ -141,15 +149,15 @@ void Matrix<T>::par_execute(uint8_t n_threads,
     size_t start = i * el_per_thread;
     size_t end = ::std::min(start + el_per_thread, total_el);
 
-    workers.push_back(tp->submit< void >([start, end, &callback] (arena_t *arena) {
-      for (int j = start; j < end; j++) {
+    workers.push_back(tp->submit< void >([start, end, callback] (arena_t *arena) {
+      for (size_t j = start; j < end; j++) {
 	callback(j);
       }
     }));
   };
 
   for (auto &f: workers)
-    f.wait();
+    f.get();
 }
 
 template <typename T>
@@ -234,7 +242,7 @@ T Matrix<T>::mean() const {
 template <typename T>
 T Matrix<T>::std() const {
   if (_cols > 1) {
-    ::std::invalid_argument("Std error - std only supported for 1 dimension");
+    throw ::std::invalid_argument("Std error - std only supported for 1 dimension");
   }
   
   T m = mean();
@@ -321,10 +329,10 @@ Matrix<T> Matrix<T>::col_wise_mask_application(const IndexMask &idx_mask) const 
 template <typename T>
 T Matrix<T>::operator[](size_t idx) const {
   if (_cols > 1)
-    ::std::invalid_argument("Matrix indexing error - this function is only for Matrices of shape (n, 1)");
+    throw ::std::invalid_argument("Matrix indexing error - this function is only for Matrices of shape (n, 1)");
 
   if (idx > _rows)
-    ::std::invalid_argument("Matrix indexing error - idx out of bounds");
+    throw ::std::invalid_argument("Matrix indexing error - idx out of bounds");
 
   return _data[idx];
 }

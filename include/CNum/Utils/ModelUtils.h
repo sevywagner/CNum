@@ -16,10 +16,12 @@ namespace CNum::Utils::ModelUtils {
   /// @param test_percentage The percentage of the dataset to use for the test
   /// subset
   /// @param shuffle Whether or not to shuffle the dataset
+  /// @param logical_id The logical id of the RNG stream
   ::std::unique_ptr<CNum::DataStructs::Matrix<double>[] > train_test_split(const CNum::DataStructs::Matrix<double> &X,
-						      const CNum::DataStructs::Matrix<double> &y,
-						      double test_percentage = 0.2,
-						      bool shuffle = true);
+									   const CNum::DataStructs::Matrix<double> &y,
+									   double test_percentage = 0.2,
+									   bool shuffle = true,
+									   uint64_t logical_id = 0);
 
   /// @brief Print a tree (left to right instead of top down)
   /// @param node A node in a TreeBooster

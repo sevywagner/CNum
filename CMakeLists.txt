@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20...3.31)
 
 project(CNumLibrary
-	VERSION 0.2.1
+	VERSION 0.2.2
 	LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -19,7 +19,7 @@ if (NOT CMAKE_BUILD_TYPE)
    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
 endif()
 
-set(allowed_build_types Release)
+set(allowed_build_types Release Fast)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${allowed_build_types})
 
 if (NOT CMAKE_BUILD_TYPE IN_LIST allowed_build_types)
@@ -69,12 +69,13 @@ add_subdirectory(src)
 
 add_library(CNum::CNum ALIAS CNum)
 
-if (MSVC)
-	target_compile_options(CNum PRIVATE /fp:fast)
-else()	
-	target_compile_options(CNum PRIVATE -Ofast -fno-math-errno -fno-trapping-math -ffp-contract=fast -ffast-math)
-endif()	
-
+if (CMAKE_BUILD_TYPE STREQUAL "Fast")
+   if (MSVC)
+      target_compile_options(CNum PRIVATE /fp:fast)
+   else()	
+      target_compile_options(CNum PRIVATE -Ofast -fno-math-errno -fno-trapping-math -ffp-contract=fast -ffast-math)
+   endif()
+endif()
 
 target_include_directories(CNum 
 			   PUBLIC

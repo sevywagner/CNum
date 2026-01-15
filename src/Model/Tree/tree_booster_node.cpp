@@ -35,7 +35,7 @@ namespace CNum::Model::Tree {
 					      double weight_decay,
 					      double reg_lambda,
 					      double gamma) {
-    uint8_t n_threads = 32;
+    constexpr uint8_t n_threads = 32;
     size_t n_features = X.get_rows();
     size_t features_per_thread = (n_features + n_threads - 1) / n_threads;
     

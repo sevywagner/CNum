@@ -243,7 +243,7 @@ void GBModel<TreeType>::save_model(::std::string path) {
   ::std::ofstream of(path);
 
   if (!of.is_open()) {
-    throw ::std::runtime_error("GB model saving error - Error opening file");
+    throw ::std::runtime_error("GB model saving error - Error opening file: " + path);
   }
 
   of << json_str;
@@ -270,7 +270,7 @@ GBModel<TreeType> GBModel<TreeType>::load_model(::std::string path) {
   ::std::ifstream is(path);
 
   if (!is.is_open()) {
-    throw ::std::runtime_error("GB model loading error - file could not be opened");
+    throw ::std::runtime_error("GB model loading error - file could not be opened: " + path);
   }
 
   json data = json::parse(is);

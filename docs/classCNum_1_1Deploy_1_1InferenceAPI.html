@@ -100,8 +100,8 @@ $(function(){initNavTree('classCNum_1_1Deploy_1_1InferenceAPI.html','','classCNu
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a04d08b2648d57e42e08b758037b7aec0" id="r_a04d08b2648d57e42e08b758037b7aec0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04d08b2648d57e42e08b758037b7aec0">InferenceAPI</a> (::std::string path, PreprocessFunction preprocess, PostprocessFunction postprocess, size_t n_models=20)</td></tr>
-<tr class="memdesc:a04d08b2648d57e42e08b758037b7aec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="memitem:ad362dffc3feafd3990e4ac712cd92f18" id="r_ad362dffc3feafd3990e4ac712cd92f18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad362dffc3feafd3990e4ac712cd92f18">InferenceAPI</a> (::std::string path, PreprocessFunction preprocess, PostprocessFunction postprocess, ::std::string allowed_origins=&quot;*&quot;, size_t n_models=20, unsigned short port=18080)</td></tr>
+<tr class="memdesc:ad362dffc3feafd3990e4ac712cd92f18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="memitem:a98ab41940c623830b9dae99423b5dcd1" id="r_a98ab41940c623830b9dae99423b5dcd1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structCNum_1_1Deploy_1_1PathString.html">PathString</a> Path&gt; </td></tr>
 <tr class="memitem:a98ab41940c623830b9dae99423b5dcd1 template"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98ab41940c623830b9dae99423b5dcd1">add_inference_route</a> (crow::HTTPMethod method, InferenceRouteFunction route)</td></tr>
 <tr class="memdesc:a98ab41940c623830b9dae99423b5dcd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a route to the API that uses a model.  <br /></td></tr>
@@ -122,8 +122,8 @@ class CNum::Deploy::InferenceAPI&lt; ModelType, Storage &gt;</div><p>A REST API 
   </dd>
 </dl>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a04d08b2648d57e42e08b758037b7aec0" name="a04d08b2648d57e42e08b758037b7aec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04d08b2648d57e42e08b758037b7aec0">&#9670;&#160;</a></span>InferenceAPI()</h2>
+<a id="ad362dffc3feafd3990e4ac712cd92f18" name="ad362dffc3feafd3990e4ac712cd92f18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad362dffc3feafd3990e4ac712cd92f18">&#9670;&#160;</a></span>InferenceAPI()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,7 +148,17 @@ template&lt;typename ModelType, typename Storage&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n_models</em></span><span class="paramdefsep"> = </span><span class="paramdefval">20</span>&#160;)</td>
+          <td class="paramtype">::std::string</td>          <td class="paramname"><span class="paramname"><em>allowed_origins</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;*&quot;</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n_models</em></span><span class="paramdefsep"> = </span><span class="paramdefval">20</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short</td>          <td class="paramname"><span class="paramname"><em>port</em></span><span class="paramdefsep"> = </span><span class="paramdefval">18080</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -159,7 +169,9 @@ template&lt;typename ModelType, typename Storage&gt; </div>
     <tr><td class="paramname">path</td><td>The path to the trained <a class="el" href="namespaceCNum.html" title="The umbrella namespace from which you can access all modules of CNum.">CNum</a> model (".cmod") </td></tr>
     <tr><td class="paramname">preprocess</td><td>The function used to preprocess the data received in the request to the '/predict' route </td></tr>
     <tr><td class="paramname">postprocess</td><td>The function used process the predictions of the model into what is returned in the response </td></tr>
+    <tr><td class="paramname">allowed_origins</td><td>The allowed origins for the API CORS header </td></tr>
     <tr><td class="paramname">n_models</td><td>The number of model instances in the ModelPool </td></tr>
+    <tr><td class="paramname">port</td><td>The port to which the API listens </td></tr>
   </table>
   </dd>
 </dl>

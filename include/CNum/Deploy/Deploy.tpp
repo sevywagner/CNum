@@ -1,15 +1,18 @@
 template <typename ModelType, typename Storage>
 InferenceAPI<ModelType, Storage>::InferenceAPI(::std::string path,
-				      PreprocessFunction preprocess,
-				      PostprocessFunction postprocess,
-				      size_t n_models)
+					       PreprocessFunction preprocess,
+					       PostprocessFunction postprocess,
+					       ::std::string allowed_origins,
+					       size_t n_models,
+					       unsigned short port)
   : _models(path, n_models),
     _preprocess(preprocess),
-    _postprocess(postprocess) {
+    _postprocess(postprocess),
+    _port(port) {
   auto &cors = _app.get_middleware<crow::CORSHandler>();
   cors
     .global()
-    .origin("*")
+    .origin(allowed_origins)
     .methods(crow::HTTPMethod::Get, crow::HTTPMethod::Post, crow::HTTPMethod::Options)
     .headers("Content-Type");
   
@@ -89,5 +92,5 @@ template <PathString Path> constexpr void InferenceAPI<ModelType, Storage>::add_
 
 template <typename ModelType, typename Storage>
 void InferenceAPI<ModelType, Storage>::start() {
-  _app.port(18080).multithreaded().run();
+  _app.port(_port).multithreaded().run();
 }

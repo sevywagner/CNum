@@ -5,14 +5,16 @@
 // -----------------------
 
 namespace CNum::Multithreading {
+  thread_local int ThreadPool::_worker_id = -1;
+  
   ThreadPool::ThreadPool(ThreadPoolConfig config) {
     _is_shutdown.store(false, ::std::memory_order_release);
     _num_threads = std::thread::hardware_concurrency() - 1;
     if (_num_threads < 1)
       _num_threads = 1;
 
-    for (int i = 0; i < _num_threads; i++) {
-      _threads.emplace_back(&ThreadPool::worker, this, config);
+    for (int i{}; i < _num_threads; i++) {
+      _threads.emplace_back(&ThreadPool::worker, this, config, i);
     }
   }
 
@@ -34,7 +36,8 @@ namespace CNum::Multithreading {
       t.join();
   }
   
-  void ThreadPool::worker(ThreadPoolConfig config) {
+  void ThreadPool::worker(ThreadPoolConfig config, int worker_id) {
+    _worker_id = worker_id;
     arena_t *arena = arena_init(config.arena_blocks_to_allocate);
     
     Func func;   
@@ -43,5 +46,9 @@ namespace CNum::Multithreading {
     }
 
     arena_free(arena);
+  }
+
+  int ThreadPool::get_worker_id() {
+    return _worker_id;
   }
 };

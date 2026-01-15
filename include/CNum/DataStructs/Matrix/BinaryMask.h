@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <stdexcept>
+#include <iostream>
 
 namespace CNum::DataStructs {
   template <typename T>

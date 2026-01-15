@@ -31,7 +31,7 @@ arena_t *arena_init(uint32_t blocks_to_allocate) {
 
 arena_view_t arena_malloc(arena_t *arena, size_t bytes, size_t type_size) {
   struct linked_list_node *new_node = NULL;
-  arena_view_t res;
+  arena_view_t res = { NULL, 0, 0 };
   size_t blocks_to_allocate;
   size_t segment_size;
   void *ptr;

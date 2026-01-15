@@ -21,10 +21,7 @@ namespace CNum::Model::Tree {
     if (low == 0 && high == n_samples) {
       ::std::iota(pos_ptr, pos_ptr + n_samples, low);
     } else {
-      ::CNum::Utils::Rand::generate_n_unique_rand_in_range<size_t>(low,
-								 high - 1,
-								 pos_ptr,
-								 n_samples);
+      ::CNum::Utils::Rand::generate_n_unique_rand_in_range<size_t>(low, high - 1, pos_ptr, n_samples, 1);
     }
   };
 

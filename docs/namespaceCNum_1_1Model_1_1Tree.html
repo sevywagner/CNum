@@ -266,13 +266,10 @@ Variables</h2></td></tr>
 <div class="line">    <span class="keywordflow">if</span> (low == 0 &amp;&amp; high == n_samples) {</div>
 <div class="line">      ::std::iota(pos_ptr, pos_ptr + n_samples, low);</div>
 <div class="line">    } <span class="keywordflow">else</span> {</div>
-<div class="line">      <a class="code hl_function" href="namespaceCNum_1_1Utils_1_1Rand.html#a757aac363649f0a5a8f4bdc6000627fd">::CNum::Utils::Rand::generate_n_unique_rand_in_range&lt;size_t&gt;</a>(low,</div>
-<div class="line">                                 high - 1,</div>
-<div class="line">                                 pos_ptr,</div>
-<div class="line">                                 n_samples);</div>
+<div class="line">      <a class="code hl_function" href="namespaceCNum_1_1Utils_1_1Rand.html#a5df77511bc73e0c2caa1ce5b03152168">::CNum::Utils::Rand::generate_n_unique_rand_in_range&lt;size_t&gt;</a>(low, high - 1, pos_ptr, n_samples, 1);</div>
 <div class="line">    }</div>
 <div class="line">  }</div>
-<div class="ttc" id="anamespaceCNum_1_1Utils_1_1Rand_html_a757aac363649f0a5a8f4bdc6000627fd"><div class="ttname"><a href="namespaceCNum_1_1Utils_1_1Rand.html#a757aac363649f0a5a8f4bdc6000627fd">CNum::Utils::Rand::generate_n_unique_rand_in_range</a></div><div class="ttdeci">void generate_n_unique_rand_in_range(size_t low_bound, size_t high_bound, T *out, size_t n)</div><div class="ttdoc">Generate n unique random integers.</div><div class="ttdef"><b>Definition</b> RandUtils.h:3</div></div>
+<div class="ttc" id="anamespaceCNum_1_1Utils_1_1Rand_html_a5df77511bc73e0c2caa1ce5b03152168"><div class="ttname"><a href="namespaceCNum_1_1Utils_1_1Rand.html#a5df77511bc73e0c2caa1ce5b03152168">CNum::Utils::Rand::generate_n_unique_rand_in_range</a></div><div class="ttdeci">void generate_n_unique_rand_in_range(size_t low_bound, size_t high_bound, T *out, size_t n, uint64_t logical_id=0)</div><div class="ttdoc">Generate n unique random integers.</div><div class="ttdef"><b>Definition</b> RandUtils.h:3</div></div>
 </div><!-- fragment -->
 </div>
 </div>

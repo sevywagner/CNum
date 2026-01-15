@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.2] - 2026-01-15
+RNG improvements and Deploy additions
+
+### Added:
+- Configurable port and allowed-origins for REST API tools
+- Switched from thread-local RNG streams to logical-id based RNG streams due to logic bug
+
+### Known limitations:
+- API subject to change (Specifically RandomGenerator)
+- Internal/advanced components still appear alongside public API components in the namespace hierarchy
+
+[0.2.2]: https://github.com/sevywagner/CNum/releases/tag/v0.2.2
+
 ## [0.2.1] - 2025-11-24
 Testing and random number generation improvements
 

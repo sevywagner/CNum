@@ -86,7 +86,7 @@ TEST(BinaryMask, AllNegativeTest) {
 }
 
 TEST(BinaryMask, SinglePositiveTest) {
-  auto mask = mask_suite_1d == 1.6;
+  ::CNum::DataStructs::BinaryMask mask = mask_suite_1d == 1.6;
   auto m2 = mask_suite_1d[mask];
   auto m3 = mask_suite_2d[mask];
   
@@ -95,7 +95,7 @@ TEST(BinaryMask, SinglePositiveTest) {
   
   ASSERT_EQ(m3.get_rows(), 1);
   for (int i = 0; i < mask_suite_len; i++) {
-    ASSERT_EQ(m3[i], i + 31); // it is in the 3rd row so we add 31
+    ASSERT_EQ(m3.get(0, i), i + 31); // it is in the 3rd row so we add 31
   }
 }
 

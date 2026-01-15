@@ -38,10 +38,12 @@ namespace CNum::Multithreading {
     std::vector<std::thread> _threads;
     std::mutex _mtx;
     ::std::atomic<bool> _is_shutdown;
+    static thread_local int _worker_id;
 
     /// @brief The worker used for each thread in the pool
     /// @param The configuration of the ThreadPool
-    void worker(ThreadPoolConfig config);
+    /// @param worker_id The index of the worker thread in the pool
+    void worker(ThreadPoolConfig config, int worker_id);
 
     /// @brief Overloaded constructor
     ThreadPool(ThreadPoolConfig config);
@@ -52,6 +54,10 @@ namespace CNum::Multithreading {
     /// @param config The configuration of the ThreadPool
     /// @return A raw pointer to the instance of the ThreadPool
     static ThreadPool *get_thread_pool(ThreadPoolConfig config = { default_arena_init_block_ct });
+
+    /// @brief Get the thread-local id of a worker
+    /// @return The worker id
+    static int get_worker_id();
 
     /// @brief Destructor
     ~ThreadPool();

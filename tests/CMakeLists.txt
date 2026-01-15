@@ -9,20 +9,14 @@ if (INSTALL_GTEST)
 	FetchContent_GetProperties(googletest)
 	if (NOT googletest_POPULATED)
 		FetchContent_MakeAvailable(googletest)
-	endif()
-	target_link_libraries(test_harness CNum gtest_main gmock_main)		     	  
+	endif()		     	  
 endif()
+
+target_link_libraries(test_harness CNum gtest_main gmock_main)
 
 if (NOT MSVC)
    	target_compile_options(test_harness PRIVATE
-   		       -fsanitize=address
-		       -O2 -g -fno-omit-frame-pointer -ffast-math 
-		       -Ofast -fno-math-errno -fno-trapping-math 
-		       -ffp-contract=fast)
+   		       	    -fsanitize=address -O2)
 	target_link_options(test_harness PRIVATE
-  		      -fsanitize=address) 
-endif()
-
-if (NOT INSTALL_GTEST)
-	target_link_libraries(test_harness PRIVATE CNum)
+  		      	    -fsanitize=address)
 endif()

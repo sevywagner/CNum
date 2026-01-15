@@ -12,7 +12,7 @@
 - Optional REST API tools for inference (Crow based)
 
 ## Immediate Plans
-- Implement LightGBM
+- Implement work stealing in thread pool
 - Implement autograd and tensor engine
 
 ## Dependencies
@@ -35,10 +35,10 @@ Docs for this library can be found <a href="https://sevywagner.github.io/CNum">h
 ```bash
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release .. # Optionally use "Fast" for a more optimized build
 sudo make install
 ```
-All build examples assume CMAKE_BUILD_TYPE=Release, which is currently the only build type supported by CNum
+All build examples assume CMAKE_BUILD_TYPE=Release. The "Fast" CMAKE_BUILD_TYPE uses aggressive compiler optimizing that boost performance but can't garuntee determinism.
 
 ### Using REST API tools:
 To use REST API tools (optional) set DEPLOY_TOOLS=ON (OFF by default). While crow is bundled, it depends on asio (standalone or boost) which can be installed <a href="https://think-async.com/Asio">here</a>.

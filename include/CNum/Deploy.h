@@ -68,6 +68,7 @@ namespace CNum::Deploy {
     crow::App<crow::CORSHandler> _app;
     PreprocessFunction _preprocess;
     PostprocessFunction _postprocess;
+    unsigned short _port;
     
   public:
     /// @brief Constructor
@@ -76,11 +77,15 @@ namespace CNum::Deploy {
     /// request to the '/predict' route
     /// @param postprocess The function used process the predictions of the model
     /// into what is returned in the response
+    /// @param allowed_origins The allowed origins for the API CORS header
     /// @param n_models The number of model instances in the ModelPool
+    /// @param port The port to which the API listens
     InferenceAPI(::std::string path,
 		 PreprocessFunction preprocess,
 		 PostprocessFunction postprocess,
-		 size_t n_models = 20);
+		 ::std::string allowed_origins = "*",
+		 size_t n_models = 20,
+		 unsigned short port = 18080);
 
     /// @brief Add a route to the API that uses a model
     /// @tparam Path The path for the new route
