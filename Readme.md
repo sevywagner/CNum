@@ -38,7 +38,7 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release .. # Optionally use "Fast" for a more optimized build
 sudo make install
 ```
-All build examples assume CMAKE_BUILD_TYPE=Release. The "Fast" CMAKE_BUILD_TYPE uses aggressive compiler optimizing that boost performance but can't garuntee determinism.
+All build examples assume CMAKE_BUILD_TYPE=Release. The "Fast" CMAKE_BUILD_TYPE uses aggressive compiler optimizations that boost performance but can't garuntee determinism.
 
 ### Using REST API tools:
 To use REST API tools (optional) set DEPLOY_TOOLS=ON (OFF by default). While crow is bundled, it depends on asio (standalone or boost) which can be installed <a href="https://think-async.com/Asio">here</a>.
